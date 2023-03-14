@@ -1,7 +1,9 @@
 package com.sass.studentactivityscoresystem.entity;
 
 import com.alibaba.fastjson.JSON;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RespBody {
     private int code;
     private Object data;

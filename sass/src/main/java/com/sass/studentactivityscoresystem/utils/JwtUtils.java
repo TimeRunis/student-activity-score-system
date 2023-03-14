@@ -33,4 +33,13 @@ public class JwtUtils {
     public static String getSk(){
         return SK;
     }
+
+    public static boolean checkPermission(String token,int level){
+        DecodedJWT decodedJWT =JWT.decode(token);
+        if(decodedJWT.getClaim("authorityLevel").asInt()>=level){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

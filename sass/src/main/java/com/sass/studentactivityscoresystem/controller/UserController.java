@@ -13,7 +13,7 @@ import java.util.Objects;
 
 
 @RestController
-public class UserController implements BaseController {
+public class UserController extends BaseController {
     @Autowired
     private UserService userService;
 
@@ -27,7 +27,6 @@ public class UserController implements BaseController {
             String userId=JwtUtils.getUserId(request.getHeader("token"));
             if(Objects.equals(userId, id) || level==10){
                 user = (User) userService.userInfoById(id);
-                System.out.println(userService.userInfoById(id));
                 if(user==null){
                     rep.setResp(404,null,"未查询到数据");
                 }else {

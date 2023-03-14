@@ -21,11 +21,11 @@ import java.io.PrintWriter;
 public class JwtInterceptor implements HandlerInterceptor {
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    RespBody respBody;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        PrintWriter writer = response.getWriter();;
-        RespBody respBody=new RespBody();
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         // 从 http 请求头中取出 token
@@ -36,6 +36,10 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
         if (StringUtils.isBlank(token)) {
             respBody.setResp(401,null,"用户未登录，请登录");
+            PrintWriter writer = response.getWriter();
+            writer.print(respBody.Oj2Json());
+            writer.close();
+            return false;
         }else {
             // 获取 token中的userId,检查用户是否存在
             String userId;
@@ -43,13 +47,18 @@ public class JwtInterceptor implements HandlerInterceptor {
                 userId = JWT.decode(token).getAudience().get(0);
             } catch (JWTDecodeException j) {
                 respBody.setResp(400,null,"token错误");
+                PrintWriter writer = response.getWriter();
                 writer.print(respBody.Oj2Json());
                 writer.close();
-                return true;
+                return false;
             }
             User user = userMapper.selectById(userId);
             if (user == null) {
                 respBody.setResp(400,null,"用户不存在，请重新登录");
+                PrintWriter writer = response.getWriter();
+                writer.print(respBody.Oj2Json());
+                writer.close();
+                return false;
             }else {
                 // 验证 token
                 JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(JwtUtils.getSk())).build();
@@ -57,11 +66,14 @@ public class JwtInterceptor implements HandlerInterceptor {
                     jwtVerifier.verify(token);
                 } catch (JWTVerificationException e) {
                     respBody.setResp(401,null,"登录已经失效,请重新登录");
+                    PrintWriter writer = response.getWriter();
+                    writer.print(respBody.Oj2Json());
+                    writer.close();
+                    return false;
                 }
             }
         }
-        writer.print(respBody.Oj2Json());
-        writer.close();
+
         return true;
     }
 }

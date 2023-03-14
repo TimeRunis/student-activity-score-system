@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @RestController
-public class LoginController implements BaseController{
+public class LoginController extends BaseController{
     @Autowired
     LoginService loginService;
 

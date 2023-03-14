@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class User {
-    @TableId("user_id")
+    @TableId(value = "user_id")
     private int userId;
     private String userName;
     private String relName;

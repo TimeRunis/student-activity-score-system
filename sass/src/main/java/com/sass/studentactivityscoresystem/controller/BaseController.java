@@ -2,6 +2,6 @@ package com.sass.studentactivityscoresystem.controller;
 
 import com.sass.studentactivityscoresystem.entity.RespBody;
 
-public interface BaseController {
+public class BaseController {
     RespBody rep = new RespBody();
 }

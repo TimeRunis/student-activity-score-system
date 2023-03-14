@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-public class RegisterController implements BaseController{
+public class RegisterController extends BaseController{
     @Autowired
     RegisterService registerService;
 
