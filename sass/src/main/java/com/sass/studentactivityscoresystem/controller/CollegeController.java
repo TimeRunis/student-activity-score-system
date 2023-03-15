@@ -22,6 +22,7 @@ public class CollegeController extends BaseController{
 
     @GetMapping("/college")
     public Object doGet(String id){
+        //参数检查
         if(id!=null){
             rep.setResp(0,collegeService.collegeInfoById(id),"查询成功");
         }

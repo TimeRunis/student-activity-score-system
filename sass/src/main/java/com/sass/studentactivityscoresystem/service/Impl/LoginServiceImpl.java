@@ -10,8 +10,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class LoginServiceImpl implements LoginService {
+    private final UserMapper userMapper;
+
     @Autowired
-    UserMapper userMapper;
+    LoginServiceImpl(UserMapper userMapper){
+        this.userMapper=userMapper;
+    }
 
     @Override
     public String login(String mail, String password){

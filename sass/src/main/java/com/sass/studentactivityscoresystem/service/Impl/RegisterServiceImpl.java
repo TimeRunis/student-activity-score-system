@@ -8,8 +8,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
+    private final UserMapper userMapper;
+
     @Autowired
-    UserMapper userMapper;
+    RegisterServiceImpl(UserMapper userMapper){
+        this.userMapper=userMapper;
+    }
 
     @Override
     public int register(User user) {

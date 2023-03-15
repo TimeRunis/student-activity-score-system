@@ -33,7 +33,7 @@ public class RegisterController extends BaseController{
     @PostMapping("/register")
     public Object doPost(@RequestBody Map<String,Object> map){
         if(!map.isEmpty()){
-            if(userService.userInfoByMail(map.get("userMail").toString())==null){
+            if(userService.isExist(map.get("userMail").toString())){
                 try{
                     user.setUserName(map.get("userName").toString());
                     user.setRelName(map.get("relName").toString());

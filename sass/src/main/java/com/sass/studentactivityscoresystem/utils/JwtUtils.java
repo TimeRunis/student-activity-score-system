@@ -7,8 +7,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.Date;
 
 public class JwtUtils {
-    private static String SK="hhhaaaaaaa114514";
-    private static Long EXPIRATION=604800L;
+    private static final String SK="hhhaaaaaaa114514";
+    private static final Long EXPIRATION=604800L;
     public static String getToken(String userId,int authorityLevel){
         //创建token
         return JWT.create()
@@ -22,9 +22,9 @@ public class JwtUtils {
                 .withIssuedAt(new Date())
                 .sign(Algorithm.HMAC256(SK));
     }
-    public static String getUserId(String token){
+    public static int getUserId(String token){
         DecodedJWT decodedJWT =JWT.decode(token);
-        return decodedJWT.getAudience().get(0);
+        return Integer.parseInt(decodedJWT.getAudience().get(0));
     }
     public static int getLevel(String token){
         DecodedJWT decodedJWT =JWT.decode(token);
@@ -36,10 +36,6 @@ public class JwtUtils {
 
     public static boolean checkPermission(String token,int level){
         DecodedJWT decodedJWT =JWT.decode(token);
-        if(decodedJWT.getClaim("authorityLevel").asInt()>=level){
-            return true;
-        }else {
-            return false;
-        }
+        return decodedJWT.getClaim("authorityLevel").asInt() >= level;
     }
 }
