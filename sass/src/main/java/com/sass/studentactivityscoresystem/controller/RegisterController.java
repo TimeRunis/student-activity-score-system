@@ -13,14 +13,16 @@ import java.util.Map;
 
 @RestController
 public class RegisterController extends BaseController{
-    @Autowired
-    RegisterService registerService;
+    private final RegisterService registerService;
+    private final UserService userService;
+    private User user;
 
     @Autowired
-    UserService userService;
-
-    @Autowired
-    User user;
+    RegisterController(RegisterService registerService,UserService userService,User user){
+        this.registerService=registerService;
+        this.userService=userService;
+        this.user=user;
+    }
 
     @GetMapping("/register")
     public Object doGet(){

@@ -1,9 +1,6 @@
 package com.sass.studentactivityscoresystem.controller;
 
-import com.sass.studentactivityscoresystem.entity.User;
 import com.sass.studentactivityscoresystem.service.LoginService;
-import com.sass.studentactivityscoresystem.utils.JwtUtils;
-import com.sass.studentactivityscoresystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,8 +11,12 @@ import java.util.Objects;
 
 @RestController
 public class LoginController extends BaseController{
+    private final LoginService loginService;
+
     @Autowired
-    LoginService loginService;
+    LoginController(LoginService loginService){
+        this.loginService=loginService;
+    }
 
     @PostMapping("/login")
 

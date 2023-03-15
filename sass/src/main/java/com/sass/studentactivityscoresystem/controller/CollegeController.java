@@ -12,7 +12,7 @@ import java.util.Map;
 @RestController
 public class CollegeController extends BaseController{
     private final CollegeService collegeService;
-    private final College college;
+    private College college;
 
     @Autowired
     CollegeController(CollegeService collegeService,College college){
@@ -40,6 +40,27 @@ public class CollegeController extends BaseController{
                     rep.setResp(0,null,"添加成功");
                 }else {
                     rep.setResp(flag,null,"重复添加");
+                }
+            }else {
+                rep.setResp(-1,null,"权限不足");
+            }
+        }else {
+            rep.setResp(-1,null,"参数错误");
+        }
+        return rep;
+    }
+
+    @DeleteMapping("/college")
+    public Object doDelete(String name,HttpServletRequest request){
+        //参数检查
+        if(!name.isEmpty()){
+            //权限检查
+            if(JwtUtils.checkPermission(request.getHeader("token"),9)){
+                int flag=collegeService.removeCollegeByName(name);
+                if(flag==0){
+                    rep.setResp(0,null,"删除成功");
+                }else {
+                    rep.setResp(flag,null,"错误");
                 }
             }else {
                 rep.setResp(-1,null,"权限不足");

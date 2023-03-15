@@ -8,17 +8,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 
 @RestController
 public class UserController extends BaseController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private User user;
 
     @Autowired
-    User user;
+    UserController(UserService userService,User user){
+        this.userService=userService;
+        this.user=user;
+    }
 
     @GetMapping("/user")
     public Object getById(String id, HttpServletRequest request){
