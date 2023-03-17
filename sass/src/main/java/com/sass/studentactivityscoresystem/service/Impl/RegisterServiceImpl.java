@@ -21,7 +21,7 @@ public class RegisterServiceImpl implements RegisterService {
             if(userMapper.insert(user)!=1){
                 return -1;
             }else {
-                return 1;
+                return 0;
             }
         }else {
             return -2;

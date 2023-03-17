@@ -18,12 +18,12 @@ public class CollegeServiceImpl implements CollegeService {
     }
 
     @Override
-    public Object collegeInfoById(String id) {
+    public Object collegeInfoById(int id) {
         //检查id是否为空
-        if(id!=null){
+        if(id>0){
             return collegeMapper.selectById(id);
         }
-        return -1;
+            return -1;
     }
 
     @Override
@@ -53,9 +53,9 @@ public class CollegeServiceImpl implements CollegeService {
     }
 
     @Override
-    public int removeCollegeById(String id) {
+    public int removeCollegeById(int id) {
         //判断参数是否为空
-        if(id!=null){
+        if(id>0){
             //查询是否已经存在
             if(collegeMapper.selectById(id)==null){
                 //不存在的学院

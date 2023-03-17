@@ -21,15 +21,23 @@ public class LoginController extends BaseController{
     @PostMapping("/login")
 
     public Object login(@RequestBody Map<String,Object> map){
-        String flag=loginService.login(map.get("userMail").toString(),map.get("userPsw").toString());
-        if(Objects.equals(flag, "-1")){
-            rep.setResp(-1,null,"用户名或密码错误");
-        }
-        if(Objects.equals(flag, "-2")){
-            rep.setResp(-2,null,"未找到用户");
-        }
-        if(flag.length()>=30){
-            rep.setResp(0,flag,"登录成功");
+        if(!map.isEmpty()){
+            try{
+                String flag=loginService.login(map.get("userMail").toString(),map.get("userPsw").toString());
+                if(Objects.equals(flag, "-1")){
+                    rep.setResp(-1,null,"用户名或密码错误");
+                }
+                if(Objects.equals(flag, "-2")){
+                    rep.setResp(-2,null,"未找到用户");
+                }
+                if(flag.length()>=30){
+                    rep.setResp(0,flag,"登录成功");
+                }
+            } catch (Exception e){
+                rep.setResp(-1,null,"参数错误");
+            }
+        }else {
+            rep.setResp(-1,null,"参数错误");
         }
         return rep;
     }

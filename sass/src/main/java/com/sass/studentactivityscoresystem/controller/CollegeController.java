@@ -21,9 +21,9 @@ public class CollegeController extends BaseController{
     }
 
     @GetMapping("/college")
-    public Object doGet(String id){
+    public Object doGet(int id){
         //参数检查
-        if(id!=null){
+        if(id>0){
             rep.setResp(0,collegeService.collegeInfoById(id),"查询成功");
         }
         return rep;
@@ -35,12 +35,16 @@ public class CollegeController extends BaseController{
         if (!map.isEmpty()){
             //权限检查
             if(JwtUtils.checkPermission(request.getHeader("token"),9)){
-                college.setCollegeName(map.get("collegeName").toString());
-                int flag=collegeService.addCollege(college);
-                if (flag==1){
-                    rep.setResp(0,null,"添加成功");
-                }else {
-                    rep.setResp(flag,null,"重复添加");
+                try{
+                    college.setCollegeName(map.get("collegeName").toString());
+                    int flag=collegeService.addCollege(college);
+                    if (flag==1){
+                        rep.setResp(0,null,"添加成功");
+                    }else {
+                        rep.setResp(flag,null,"重复添加");
+                    }
+                }catch (Exception e){
+                    rep.setResp(-1,null,"参数错误");
                 }
             }else {
                 rep.setResp(-1,null,"权限不足");
@@ -57,11 +61,15 @@ public class CollegeController extends BaseController{
         if(!name.isEmpty()){
             //权限检查
             if(JwtUtils.checkPermission(request.getHeader("token"),9)){
-                int flag=collegeService.removeCollegeByName(name);
-                if(flag==0){
-                    rep.setResp(0,null,"删除成功");
-                }else {
-                    rep.setResp(flag,null,"错误");
+                try{
+                    int flag=collegeService.removeCollegeByName(name);
+                    if(flag==0){
+                        rep.setResp(0,null,"删除成功");
+                    }else {
+                        rep.setResp(flag,null,"错误");
+                    }
+                }catch (Exception e){
+                    rep.setResp(-1,null,"参数错误");
                 }
             }else {
                 rep.setResp(-1,null,"权限不足");

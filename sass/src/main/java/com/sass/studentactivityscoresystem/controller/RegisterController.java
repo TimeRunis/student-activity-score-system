@@ -24,12 +24,6 @@ public class RegisterController extends BaseController{
         this.user=user;
     }
 
-    @GetMapping("/register")
-    public Object doGet(){
-        rep.setResp(0,null,"测试");
-        return rep;
-    }
-
     @PostMapping("/register")
     public Object doPost(@RequestBody Map<String,Object> map){
         if(!map.isEmpty()){
@@ -45,8 +39,8 @@ public class RegisterController extends BaseController{
                     rep.setResp(-1,null,"参数出错");
                 }
                 int flag=registerService.register(user);
-                if(flag!=1){
-                    rep.setResp(-1,null,"注册失败");
+                if(flag!=0){
+                    rep.setResp(flag,null,"注册失败");
                 }else {
                     rep.setResp(0,null,"注册成功");
                 }

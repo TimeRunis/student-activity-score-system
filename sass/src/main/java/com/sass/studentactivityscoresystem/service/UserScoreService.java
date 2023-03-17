@@ -7,6 +7,8 @@ public interface UserScoreService {
     int minusUserScore(int id,int number);
     //设置用户积分
     int setUserScore(int id,int number);
+    //增减用户历史总积分
+    int changeUserTotalActivityScore(int id,int number);
     //设置用户历史总积分
     int setUserTotalActivityScore(int id,int number);
 }
