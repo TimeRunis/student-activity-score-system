@@ -4,14 +4,12 @@ import com.sass.studentactivityscoresystem.entity.User;
 import com.sass.studentactivityscoresystem.service.RegisterService;
 import com.sass.studentactivityscoresystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class RegisterController extends BaseController{
     private final RegisterService registerService;
     private final UserService userService;
@@ -48,7 +46,7 @@ public class RegisterController extends BaseController{
                 rep.setResp(-1,null,"邮箱已被注册");
             }
         }else {
-            rep.setResp(-1,null,"参数错误");
+            rep.setResp(-1,null,"空参数");
         }
         return rep;
     }

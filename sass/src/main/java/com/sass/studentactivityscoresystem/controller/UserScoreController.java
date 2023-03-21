@@ -3,6 +3,7 @@ package com.sass.studentactivityscoresystem.controller;
 import com.sass.studentactivityscoresystem.service.UserScoreService;
 import com.sass.studentactivityscoresystem.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class UserScoreController extends BaseController{
     private final UserScoreService userScoreService;
 
@@ -19,7 +21,7 @@ public class UserScoreController extends BaseController{
         this.userScoreService=userScoreService;
     }
 
-    @PutMapping("/activityScore")
+    @PutMapping("/score")
     public Object doPut(@RequestBody Map<String,Object> map, HttpServletRequest request){
         //是否为空数据
         if(!map.isEmpty()){
@@ -114,6 +116,8 @@ public class UserScoreController extends BaseController{
             }catch (Exception e){
                 rep.setResp(-1,null,"非法参数");
             }
+        }else {
+            rep.setResp(-1,null,"空参数");
         }
         return rep;
     }

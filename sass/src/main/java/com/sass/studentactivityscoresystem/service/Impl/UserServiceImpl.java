@@ -1,17 +1,38 @@
 package com.sass.studentactivityscoresystem.service.Impl;
 
+import com.sass.studentactivityscoresystem.entity.ReturnBody;
 import com.sass.studentactivityscoresystem.mapper.UserMapper;
 import com.sass.studentactivityscoresystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends BaseService implements UserService {
     private final UserMapper userMapper;
 
     @Autowired
     UserServiceImpl(UserMapper userMapper){
         this.userMapper=userMapper;
+    }
+
+    @Override
+    public ReturnBody findInfoByName(String name) {
+        if(!name.isEmpty()){
+            returnBody.setBody(0,userMapper.findUserByName(name));
+        }else {
+            returnBody.setBody(-1,null);
+        }
+        return returnBody;
+    }
+
+    @Override
+    public ReturnBody findInfoByRelName(String name) {
+        if(!name.isEmpty()){
+            returnBody.setBody(0,userMapper.findUserByRelname(name));
+        }else {
+            returnBody.setBody(-1,null);
+        }
+        return returnBody;
     }
 
     @Override
@@ -21,7 +42,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Object userInfoByMail(String mail){
-        return userMapper.selectByMail(mail);
+        if(!mail.isEmpty()){
+            return userMapper.selectByMail(mail);
+        }else {
+            return -1;
+        }
+
     }
 
     @Override

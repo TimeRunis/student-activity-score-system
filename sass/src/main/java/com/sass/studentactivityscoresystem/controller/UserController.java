@@ -3,6 +3,7 @@ package com.sass.studentactivityscoresystem.controller;
 import com.sass.studentactivityscoresystem.service.UserService;
 import com.sass.studentactivityscoresystem.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +12,7 @@ import java.util.Objects;
 
 
 @RestController
+@CrossOrigin(origins = "*")
 public class UserController extends BaseController {
     private final UserService userService;
 
@@ -33,7 +35,7 @@ public class UserController extends BaseController {
                 rep.setResp(-1,null,"你的权限不足");
             }
         }else {
-            rep.setResp(-1,null,"参数错误");
+            rep.setResp(-1,null,"空参数");
         }
         return rep;
     }

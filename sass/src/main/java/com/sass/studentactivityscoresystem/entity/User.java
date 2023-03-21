@@ -1,6 +1,7 @@
 package com.sass.studentactivityscoresystem.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,6 +10,7 @@ public class User {
     private int userId;
     private String userName;
     private String relName;
+    @JsonIgnore
     private String userPsw;
     private String userMail;
     private int gender;

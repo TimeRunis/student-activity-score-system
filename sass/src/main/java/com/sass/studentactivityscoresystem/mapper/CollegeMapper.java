@@ -6,11 +6,17 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface CollegeMapper extends BaseMapper<College> {
+    //名字模糊查找
+    @Select("select * from college where college_name like CONCAT('%',#{name},'%')")
+    List<College> findByName(String name);
+    //名字精确查找
     @Select("select * from college where college_name=#{name}")
-    public College selectByName(String name);
-
+    College selectByName(String name);
+    //名字删除
     @Delete("delete from college where college_name=#{name}")
-    public int deleteName(String name);
+    int deleteName(String name);
 }

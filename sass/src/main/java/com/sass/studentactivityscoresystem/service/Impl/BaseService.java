@@ -1,12 +1,9 @@
-package com.sass.studentactivityscoresystem.controller;
+package com.sass.studentactivityscoresystem.service.Impl;
 
-import com.sass.studentactivityscoresystem.entity.RespBody;
 import com.sass.studentactivityscoresystem.entity.ReturnBody;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-public class BaseController {
+public class BaseService {
     @Autowired
-    public RespBody rep;
     public ReturnBody returnBody;
 }

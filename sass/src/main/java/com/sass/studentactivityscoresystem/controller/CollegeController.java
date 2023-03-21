@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class CollegeController extends BaseController{
     private final CollegeService collegeService;
     private College college;
@@ -50,7 +51,7 @@ public class CollegeController extends BaseController{
                 rep.setResp(-1,null,"权限不足");
             }
         }else {
-            rep.setResp(-1,null,"参数错误");
+            rep.setResp(-1,null,"空参数");
         }
         return rep;
     }

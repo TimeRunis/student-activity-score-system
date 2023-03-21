@@ -2,6 +2,7 @@ package com.sass.studentactivityscoresystem.controller;
 
 import com.sass.studentactivityscoresystem.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class LoginController extends BaseController{
     private final LoginService loginService;
 
@@ -37,7 +39,7 @@ public class LoginController extends BaseController{
                 rep.setResp(-1,null,"参数错误");
             }
         }else {
-            rep.setResp(-1,null,"参数错误");
+            rep.setResp(-1,null,"空参数");
         }
         return rep;
     }
