@@ -8,5 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class BaseController {
     @Autowired
     public RespBody rep;
+    @Autowired
     public ReturnBody returnBody;
+
+
 }

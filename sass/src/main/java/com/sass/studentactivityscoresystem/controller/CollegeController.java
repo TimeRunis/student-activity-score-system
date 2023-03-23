@@ -57,13 +57,13 @@ public class CollegeController extends BaseController{
     }
 
     @DeleteMapping("/college")
-    public Object doDelete(String name,HttpServletRequest request){
+    public Object doDelete(int id,HttpServletRequest request){
         //参数检查
-        if(!name.isEmpty()){
+        if(id>0){
             //权限检查
             if(JwtUtils.checkPermission(request.getHeader("token"),9)){
                 try{
-                    int flag=collegeService.removeCollegeByName(name);
+                    int flag=collegeService.removeCollegeById(id);
                     if(flag==0){
                         rep.setResp(0,null,"删除成功");
                     }else {

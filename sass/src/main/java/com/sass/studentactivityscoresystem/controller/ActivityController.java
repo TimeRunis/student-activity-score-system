@@ -29,7 +29,9 @@ public class ActivityController extends BaseController implements GetController,
     @GetMapping("/activity")
     @Override
     public RespBody doGet(Map<Object, String> map, HttpServletRequest request) {
+        //空参数检查
         if(!map.isEmpty()){
+            //权限检查
             if(JwtUtils.checkPermission(request.getHeader("token"),9)){
                 try{
                     //判断id查询还是name查询
@@ -44,7 +46,7 @@ public class ActivityController extends BaseController implements GetController,
 
                     } else if (map.get("name")!=null) {
                         //名字模糊查询
-                        returnBody = activityService.getActivityByName(map.get("name"));
+                        returnBody = activityService.findByName(map.get("name"),Integer.parseInt(map.get("current")),Integer.parseInt(map.get("size")));
                         if (returnBody.getFlag() == 0) {
                             rep.setResp(0, returnBody.getData(), "查询成功");
                         } else {

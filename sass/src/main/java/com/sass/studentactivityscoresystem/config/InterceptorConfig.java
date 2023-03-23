@@ -1,5 +1,6 @@
-package com.sass.studentactivityscoresystem.interceptor;
+package com.sass.studentactivityscoresystem.config;
 
+import com.sass.studentactivityscoresystem.interceptor.JwtInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -17,7 +18,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login","/register")
-                .excludePathPatterns("/swagger-resources/**","/swagger-ui/**", "/v3/**", "/error");
+                .excludePathPatterns("/login","/register");
     }
 }

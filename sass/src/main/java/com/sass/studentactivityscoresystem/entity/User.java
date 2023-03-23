@@ -9,7 +9,7 @@ public class User {
     @TableId(value = "user_id")
     private int userId;
     private String userName;
-    private String relName;
+    private String realName;
     @JsonIgnore
     private String userPsw;
     private String userMail;
@@ -32,7 +32,7 @@ public class User {
         return "User{" +
                 "userId=" + userId +
                 ", userName='" + userName + '\'' +
-                ", relName='" + relName + '\'' +
+                ", relName='" + realName + '\'' +
                 ", userPsw='" + userPsw + '\'' +
                 ", userMail='" + userMail + '\'' +
                 ", gender=" + gender +
@@ -70,12 +70,12 @@ public class User {
         this.userName = userName;
     }
 
-    public String getRelName() {
-        return relName;
+    public String getRealName() {
+        return realName;
     }
 
-    public void setRelName(String relName) {
-        this.relName = relName;
+    public void setRealName(String relName) {
+        this.realName = relName;
     }
 
     public int getGender() {

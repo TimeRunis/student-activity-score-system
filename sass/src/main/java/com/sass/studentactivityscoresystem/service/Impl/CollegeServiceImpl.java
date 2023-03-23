@@ -1,13 +1,18 @@
 package com.sass.studentactivityscoresystem.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sass.studentactivityscoresystem.entity.ActivitySubmit;
 import com.sass.studentactivityscoresystem.entity.College;
+import com.sass.studentactivityscoresystem.entity.ReturnBody;
 import com.sass.studentactivityscoresystem.mapper.CollegeMapper;
 import com.sass.studentactivityscoresystem.service.CollegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CollegeServiceImpl implements CollegeService {
+public class CollegeServiceImpl extends ServiceImpl<CollegeMapper,College> implements CollegeService {
 
     private final CollegeMapper collegeMapper;
 
@@ -27,13 +32,16 @@ public class CollegeServiceImpl implements CollegeService {
     }
 
     @Override
-    public Object collegeInfoByName(String name) {
-        //检查名字是否为空
-        if(name!=null){
-            return collegeMapper.selectByName(name);
-        }
-        return -1;
+    public Page findByName(String name, int current, int size) {
+        ReturnBody returnBody =new ReturnBody();
+        //分页参数
+        Page<College> page = new Page<>(current, size);
+        //queryWrapper组装查询where条件
+        LambdaQueryWrapper<College> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(College::getCollegeName,name);
+        return this.getBaseMapper().selectPage(page,queryWrapper);
     }
+
 
     @Override
     public int addCollege(College college) {

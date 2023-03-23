@@ -10,12 +10,6 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper extends BaseMapper<User>{
-    //用户名模糊查询
-    @Select("select * from user where user_name like CONCAT('%',#{name},'%')")
-    List<User> findUserByName(String name);
-    //真实姓名模糊查询
-    @Select("select * from user where rel_name like CONCAT('%',#{name},'%')")
-    List<User> findUserByRelname(String name);
     //邮箱查询所有用户信息
     @Select("select * from user where user_mail=#{mail}")
     User selectByMail(String mail);

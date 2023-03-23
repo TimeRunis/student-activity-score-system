@@ -28,7 +28,7 @@ public class RegisterController extends BaseController{
             if(userService.isExist(map.get("userMail").toString())){
                 try{
                     user.setUserName(map.get("userName").toString());
-                    user.setRelName(map.get("relName").toString());
+                    user.setRealName(map.get("realName").toString());
                     user.setUserMail(map.get("userMail").toString());
                     user.setUserPsw(map.get("userPsw").toString());
                     user.setGender(Integer.parseInt(map.get("gender").toString()));
