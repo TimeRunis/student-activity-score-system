@@ -23,7 +23,7 @@ public class LoginServiceImpl implements LoginService {
         if(user!=null){
             if(user.getUserPsw().equals(password)){
                 //登录成功返回token
-                return JwtUtils.getToken(String.valueOf(user.getUserId()),user.getAuthorityLevel());
+                return JwtUtils.getToken(String.valueOf(user.getUserId()),user.getAuthorityLevel(),user.getUserName());
             }else {
                 //密码错误
                 return "-1";

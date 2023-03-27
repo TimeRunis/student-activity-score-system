@@ -9,13 +9,15 @@ import java.util.Date;
 public class JwtUtils {
     private static final String SK="hhhaaaaaaa114514";
     private static final Long EXPIRATION=604800L;
-    public static String getToken(String userId,int authorityLevel){
+    public static String getToken(String userId,int authorityLevel,String userName){
         //创建token
         return JWT.create()
                 //写入用户id
                 .withAudience(userId)
                 //写入用户权限等级
                 .withClaim("authorityLevel", authorityLevel)
+                //写入用户名
+                .withClaim("userName",userName)
                 //过期时间
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION * 1000))
                 //签发时间
@@ -37,5 +39,10 @@ public class JwtUtils {
     public static boolean checkPermission(String token,int level){
         DecodedJWT decodedJWT =JWT.decode(token);
         return decodedJWT.getClaim("authorityLevel").asInt() >= level;
+    }
+
+    public static String getUserName(String token) {
+        DecodedJWT decodedJWT =JWT.decode(token);
+        return decodedJWT.getClaim("userName").asString();
     }
 }

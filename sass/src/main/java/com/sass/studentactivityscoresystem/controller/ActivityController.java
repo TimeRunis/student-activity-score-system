@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin(origins = "*")
 public class ActivityController extends BaseController implements GetController, PostController , PutController, DeleteController {
-    private ActivityService activityService;
+    private final ActivityService activityService;
     private Activity activity;
 
     @Autowired
@@ -46,7 +46,7 @@ public class ActivityController extends BaseController implements GetController,
 
                     } else if (map.get("name")!=null) {
                         //名字模糊查询
-                        returnBody = activityService.findByName(map.get("name"),Integer.parseInt(map.get("current")),Integer.parseInt(map.get("size")));
+                        returnBody = activityService.findByName(map.get("name"),map.get("current"),map.get("size"));
                         if (returnBody.getFlag() == 0) {
                             rep.setResp(0, returnBody.getData(), "查询成功");
                         } else {
@@ -140,8 +140,12 @@ public class ActivityController extends BaseController implements GetController,
             if(JwtUtils.checkPermission(request.getHeader("token"),9)){
                 try{
                     if(activityService.getActivityInfoById(acId).getFlag()==0){
-                        activityService.removeActivityById(acId);
-                        rep.setResp(0,null,"删除成功");
+                        if(activityService.removeActivityById(acId).getFlag()==0){
+                            rep.setResp(0,null,"删除成功");
+                        }else {
+                            rep.setResp(-1,null,"删除失败");
+                        }
+
                     }else {
                         rep.setResp(-1,null,"不存在的活动");
                     }

@@ -8,8 +8,18 @@ public class ActivitySubmit {
     @TableId(value = "as_id")
     private int asId;
     private int userId;
+    private String userName;
     private int activityId;
     private String submitTime;
+
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public int getAsId() {
         return asId;

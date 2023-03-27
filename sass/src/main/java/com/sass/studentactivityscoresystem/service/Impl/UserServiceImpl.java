@@ -67,13 +67,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public boolean isExist(int id) {
-        return this.getBaseMapper().getUserMailById(id) == null;
+        return this.getBaseMapper().getUserMailById(id) != null;
 
     }
 
     @Override
     public boolean isExist(String mail) {
-        return this.getBaseMapper().getUserIdByMail(mail) == null;
+        return this.getBaseMapper().getUserIdByMail(mail) != null;
 
     }
 }

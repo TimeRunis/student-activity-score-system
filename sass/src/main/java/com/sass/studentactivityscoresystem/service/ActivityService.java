@@ -6,9 +6,9 @@ import com.sass.studentactivityscoresystem.entity.ReturnBody;
 
 public interface ActivityService extends IService<Activity> {
     //模糊查询名字
-    public ReturnBody findByName(String name,int current,int size);
+    ReturnBody findByName(String name,String current,String size);
     //模糊查询内容
-    public ReturnBody findByContent(String name,int current,int size);
+    ReturnBody findByContent(String name,String current,String size);
     //id查询活动信息
     ReturnBody getActivityInfoById(int id);
     //发布活动

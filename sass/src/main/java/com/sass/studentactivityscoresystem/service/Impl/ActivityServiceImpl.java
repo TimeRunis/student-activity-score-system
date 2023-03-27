@@ -32,10 +32,10 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
     }
 
     @Override
-    public ReturnBody findByName(String name,int current,int size) {
+    public ReturnBody findByName(String name,String current,String size) {
         if(!name.isEmpty()){
             //分页参数
-            Page<Activity> page = new Page<>(current, size);
+            Page<Activity> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
             //queryWrapper组装查询where条件
             LambdaQueryWrapper<Activity> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.like(Activity::getActivityName,name);
@@ -48,10 +48,10 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
     }
 
     @Override
-    public ReturnBody findByContent(String content,int current,int size) {
+    public ReturnBody findByContent(String content,String current,String size) {
         if(!content.isEmpty()){
             //分页参数
-            Page<Activity> page = new Page<>(current, size);
+            Page<Activity> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
             //queryWrapper组装查询where条件
             LambdaQueryWrapper<Activity> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.like(Activity::getActivityContent,content);
