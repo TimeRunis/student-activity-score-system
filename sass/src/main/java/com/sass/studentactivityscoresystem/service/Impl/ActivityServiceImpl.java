@@ -32,13 +32,13 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
     }
 
     @Override
-    public ReturnBody findByName(String name,String current,String size) {
-        if(!name.isEmpty()){
+    public ReturnBody find(String key,String current,String size) {
+        if(!key.isEmpty()){
             //分页参数
             Page<Activity> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
             //queryWrapper组装查询where条件
             LambdaQueryWrapper<Activity> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.like(Activity::getActivityName,name);
+            queryWrapper.like(Activity::getActivityName,key).or().like(Activity::getActivityContent,key);
             this.getBaseMapper().selectPage(page,queryWrapper);
             returnBody.setBody(0,page);
         }else {
@@ -48,18 +48,13 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
     }
 
     @Override
-    public ReturnBody findByContent(String content,String current,String size) {
-        if(!content.isEmpty()){
-            //分页参数
-            Page<Activity> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
-            //queryWrapper组装查询where条件
-            LambdaQueryWrapper<Activity> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.like(Activity::getActivityContent,content);
-            this.getBaseMapper().selectPage(page,queryWrapper);
-            returnBody.setBody(0,page);
-        }else {
-            returnBody.setBody(-1,null);
-        }
+    public ReturnBody findAll(String current,String size) {
+        //分页参数
+        Page<Activity> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
+        //queryWrapper组装查询where条件
+        LambdaQueryWrapper<Activity> queryWrapper = new LambdaQueryWrapper<>();
+        this.getBaseMapper().selectPage(page,queryWrapper);
+        returnBody.setBody(0,page);
         return returnBody;
     }
 

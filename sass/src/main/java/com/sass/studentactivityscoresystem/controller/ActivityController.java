@@ -31,7 +31,34 @@ public class ActivityController extends BaseController implements GetController,
     public RespBody doGet(Map<Object, String> map, HttpServletRequest request) {
         //空参数检查
         if(!map.isEmpty()){
-            //权限检查
+            //用户查询
+            if(JwtUtils.checkPermission(request.getHeader("token"),1)){
+                try{
+                    //判断id查询还是name查询
+                    if (map.get("id")!=null) {
+                        //id精确查询
+                        returnBody = activityService.getActivityInfoById(Integer.parseInt(map.get("id")));
+                        if (returnBody.getFlag() == 0) {
+                            rep.setResp(0, returnBody.getData(), "查询成功");
+                        } else {
+                            rep.setResp(returnBody.getFlag(), null, "出现错误");
+                        }
+
+                    } else if (map.get("key")!=null) {
+                        //内容和名字模糊查找
+                        returnBody = activityService.find(map.get("key"),map.get("current"),map.get("size"));
+                        if (returnBody.getFlag() == 0) {
+                            rep.setResp(0, returnBody.getData(), "查询成功");
+                        } else {
+                            rep.setResp(returnBody.getFlag(), null, "出现错误");
+                        }
+                    }
+                }catch (Exception e){
+                    rep.setResp(-1,null,"参数错误");
+                }
+            }
+
+            //管理员查询
             if(JwtUtils.checkPermission(request.getHeader("token"),9)){
                 try{
                     //判断id查询还是name查询
@@ -44,9 +71,17 @@ public class ActivityController extends BaseController implements GetController,
                             rep.setResp(returnBody.getFlag(), null, "出现错误");
                         }
 
-                    } else if (map.get("name")!=null) {
-                        //名字模糊查询
-                        returnBody = activityService.findByName(map.get("name"),map.get("current"),map.get("size"));
+                    } else if (map.get("key")!=null) {
+                        //内容和名字模糊查找
+                        returnBody = activityService.find(map.get("key"),map.get("current"),map.get("size"));
+                        if (returnBody.getFlag() == 0) {
+                            rep.setResp(0, returnBody.getData(), "查询成功");
+                        } else {
+                            rep.setResp(returnBody.getFlag(), null, "出现错误");
+                        }
+                    }else {
+                        //查询所有内容
+                        returnBody = activityService.findAll(map.get("current"),map.get("size"));
                         if (returnBody.getFlag() == 0) {
                             rep.setResp(0, returnBody.getData(), "查询成功");
                         } else {

@@ -1,5 +1,6 @@
 package com.sass.studentactivityscoresystem.controller;
 
+import com.sass.studentactivityscoresystem.controller.method.DeleteController;
 import com.sass.studentactivityscoresystem.controller.method.GetController;
 import com.sass.studentactivityscoresystem.controller.method.PostController;
 import com.sass.studentactivityscoresystem.entity.Activity;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -126,4 +126,5 @@ public class ActivitySubmitController extends BaseController implements GetContr
         }
         return rep;
     }
+
 }
