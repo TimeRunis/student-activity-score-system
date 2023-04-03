@@ -1,6 +1,7 @@
 package com.sass.studentactivityscoresystem.controller;
 
 import com.sass.studentactivityscoresystem.service.LoginService;
+import com.sass.studentactivityscoresystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,10 +15,12 @@ import java.util.Objects;
 @CrossOrigin(origins = "*")
 public class LoginController extends BaseController{
     private final LoginService loginService;
+    private final UserService userService;
 
     @Autowired
-    LoginController(LoginService loginService){
+    LoginController(LoginService loginService, UserService userService){
         this.loginService=loginService;
+        this.userService = userService;
     }
 
     @PostMapping("/login")
@@ -33,7 +36,10 @@ public class LoginController extends BaseController{
                     rep.setResp(-2,null,"未找到用户");
                 }
                 if(flag.length()>=30){
-                    rep.setResp(0,flag,"登录成功");
+                    //登录成功并返回用户信息
+                    map.put("token",flag);
+                    map.put("info",userService.userInfoByMail(map.get("userMail").toString()));
+                    rep.setResp(0,map,"登录成功");
                 }
             } catch (Exception e){
                 rep.setResp(-1,null,"参数错误");

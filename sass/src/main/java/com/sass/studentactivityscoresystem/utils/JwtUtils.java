@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class JwtUtils {
     private static final String SK="hhhaaaaaaa114514";
+    //token过期时间
     private static final Long EXPIRATION=604800L;
     public static String getToken(String userId,int authorityLevel,String userName){
         //创建token
