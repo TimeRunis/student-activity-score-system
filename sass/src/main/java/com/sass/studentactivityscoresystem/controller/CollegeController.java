@@ -1,8 +1,11 @@
 package com.sass.studentactivityscoresystem.controller;
 
+import com.sass.studentactivityscoresystem.controller.method.GetController;
 import com.sass.studentactivityscoresystem.entity.College;
+import com.sass.studentactivityscoresystem.entity.RespBody;
 import com.sass.studentactivityscoresystem.service.CollegeService;
 import com.sass.studentactivityscoresystem.utils.JwtUtils;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*")
-public class CollegeController extends BaseController{
+public class CollegeController extends BaseController implements GetController {
     private final CollegeService collegeService;
     private College college;
 
@@ -22,10 +25,16 @@ public class CollegeController extends BaseController{
     }
 
     @GetMapping("/college")
-    public Object doGet(int id){
-        //参数检查
-        if(id>0){
-            rep.setResp(0,collegeService.collegeInfoById(id),"查询成功");
+    @Override
+    public RespBody doGet(Map<Object, String> map, HttpServletRequest request) {
+        if (!map.isEmpty()){
+            if(map.containsKey("id")){
+                rep.setResp(0,collegeService.collegeInfoById(Integer.parseInt(map.get("id"))),"查询成功");
+            }else {
+                rep.setResp(0,collegeService.list(),"查询成功");
+            }
+        }else {
+            rep.setResp(0,collegeService.list(),"查询成功");
         }
         return rep;
     }
@@ -80,4 +89,6 @@ public class CollegeController extends BaseController{
         }
         return rep;
     }
+
+
 }

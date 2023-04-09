@@ -53,6 +53,7 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
         Page<Activity> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
         //queryWrapper组装查询where条件
         LambdaQueryWrapper<Activity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.select(Activity.class,fieldInfo->!fieldInfo.getColumn().equals("activity_content"));
         this.getBaseMapper().selectPage(page,queryWrapper);
         returnBody.setBody(0,page);
         return returnBody;

@@ -14,6 +14,12 @@ public interface UserService extends IService<User> {
     Object userInfoById(int id);
     //邮箱查询用户信息
     Object userInfoByMail(String mail);
+    //更新用户基本信息
+    Object updateBaseInfo(User user);
+
+
+    Object updateUserPsw(int userId, String userPsw);
+
     //id查询用户信息是否存在
     boolean isExist(int id);
     //邮箱查询用户信息是否存在

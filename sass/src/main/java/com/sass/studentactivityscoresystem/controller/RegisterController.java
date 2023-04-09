@@ -25,7 +25,7 @@ public class RegisterController extends BaseController{
     @PostMapping("/register")
     public Object doPost(@RequestBody Map<String,Object> map){
         if(!map.isEmpty()){
-            if(userService.isExist(map.get("userMail").toString())){
+            if(!userService.isExist(map.get("userMail").toString())){
                 try{
                     user.setUserName(map.get("userName").toString());
                     user.setRealName(map.get("realName").toString());
@@ -36,12 +36,17 @@ public class RegisterController extends BaseController{
                 }catch (Exception e){
                     rep.setResp(-1,null,"参数出错");
                 }
-                int flag=registerService.register(user);
-                if(flag!=0){
-                    rep.setResp(flag,null,"注册失败");
-                }else {
-                    rep.setResp(0,null,"注册成功");
+                try{
+                    int flag=registerService.register(user);
+                    if(flag!=0){
+                        rep.setResp(flag,null,"注册失败");
+                    }else {
+                        rep.setResp(0,null,"注册成功");
+                    }
+                } catch (Exception e){
+                    rep.setResp(-1,null,"参数错误请检查");
                 }
+
             }else {
                 rep.setResp(-1,null,"邮箱已被注册");
             }

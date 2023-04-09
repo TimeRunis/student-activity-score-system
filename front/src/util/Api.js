@@ -33,13 +33,15 @@ let baseUrl="http://localhost:8080/";
 let api={
     "activity":baseUrl+"activity",
     "login":baseUrl+"login",
-    "user":baseUrl+"user"
+    "user":baseUrl+"user",
+    "register":baseUrl+"register",
+    "college":baseUrl+"college"
 }
 
 function data2url(apiId,data){
     let url=api[apiId]+"?"
     for(let i in data){
-        url+=i.toString()+"="+data[i]+"&"
+        url+=i+"="+data[i]+"&"
     }
     return url
 }

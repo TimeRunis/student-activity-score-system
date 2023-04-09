@@ -13,6 +13,15 @@ public class Activity {
     private String deadLine;
     private int userId;
     private String createTime;
+    private String headImg;
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
 
     public String getActivityContent() {
         return activityContent;

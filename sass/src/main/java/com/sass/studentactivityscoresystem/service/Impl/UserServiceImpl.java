@@ -3,7 +3,6 @@ package com.sass.studentactivityscoresystem.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sass.studentactivityscoresystem.entity.ActivitySubmit;
 import com.sass.studentactivityscoresystem.entity.ReturnBody;
 import com.sass.studentactivityscoresystem.entity.User;
 import com.sass.studentactivityscoresystem.mapper.UserMapper;
@@ -59,6 +58,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Object userInfoByMail(String mail){
         if(!mail.isEmpty()){
             return this.getBaseMapper().selectByMail(mail);
+        }else {
+            return -1;
+        }
+
+    }
+
+
+    @Override
+    public Object updateBaseInfo(User user){
+        if(user!=null){
+            return this.getBaseMapper().updateBaseInfo(user);
+        }else {
+            return -1;
+        }
+
+    }
+
+    @Override
+    public Object updateUserPsw(int userId,String userPsw){
+        if(userPsw!=null){
+            return this.getBaseMapper().updateUserPsw(userId,userPsw);
         }else {
             return -1;
         }

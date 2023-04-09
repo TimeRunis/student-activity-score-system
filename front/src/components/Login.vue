@@ -1,12 +1,13 @@
 <template>
-  <div class="login-box">
-    <van-form @submit="onSubmit">
+  <div class="login_box">
+    <van-form @submit="login">
       <van-field
           v-model="userMail"
           name="userMail"
           label="邮箱"
           placeholder="邮箱"
-          :rules="[{ required: true, message: '请填写用户名' }]"
+          :rules="[{ required: true, message: '请填写邮箱' }]"
+          class="login_field"
       />
       <van-field
           v-model="userPsw"
@@ -15,9 +16,10 @@
           label="密码"
           placeholder="密码"
           :rules="[{ required: true, message: '请填写密码' }]"
+          class="login_field"
       />
-      <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit">提交</van-button>
+      <div style="margin: 20px;">
+        <van-button round block type="info" native-type="submit">登录</van-button>
       </div>
     </van-form>
   </div>
@@ -36,12 +38,14 @@ export default {
     };
   },
   methods: {
-    onSubmit(values) {
+    login(values) {
       apiPost("login",values).then((resp)=>{
-        this.$cookies.set("token",resp.data["data"]["token"])
-        localStorage.setItem("userId",resp.data["data"]["info"]["userId"])
+        if(resp.data["code"]===0){
+          this.$cookies.set("token",resp.data["data"]["token"])
+          localStorage.setItem("userId",resp.data["data"]["info"]["userId"])
+          location.reload()
+        }
         message(resp.data)
-        location.reload()
       })
     },
   },
@@ -49,7 +53,11 @@ export default {
 </script>
 
 <style scoped>
-.login-box{
+.login_box{
   margin-top: 50px;
+}
+.login_field{
+  padding-top: 20px;
+  margin: 20px 0px 30px 0px;
 }
 </style>
