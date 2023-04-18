@@ -35,7 +35,10 @@ let api={
     "login":baseUrl+"login",
     "user":baseUrl+"user",
     "register":baseUrl+"register",
-    "college":baseUrl+"college"
+    "college":baseUrl+"college",
+    "activitySubmit":baseUrl+"activitySubmit",
+    "goods":baseUrl+"goods",
+    "goodsOrder":baseUrl+"goodsOrder",
 }
 
 function data2url(apiId,data){
@@ -55,17 +58,33 @@ export function message(resp){
 }
 
 export function apiPost(apiId,data){
-    return axios.post(api[apiId],data);
+    try{
+        return axios.post(api[apiId],data);
+    }catch (e){
+        Notify({type:"danger",message:"服务器错误"})
+    }
 }
 
 export function apiGet(apiId,data){
-    return axios.get(data2url(apiId,data))
+    try{
+        return axios.get(data2url(apiId,data))
+    }catch (e){
+        Notify({type:"danger",message:"服务器错误"})
+    }
 }
 
 export function apiPut(apiId,data){
-    return axios.put(api[apiId],data);
+    try{
+        return axios.put(api[apiId],data);
+    }catch (e){
+        Notify({type:"danger",message:"服务器错误"})
+    }
 }
 
 export function apiDelete(apiId,data){
-    return axios.delete(api[apiId],data);
+    try{
+        return axios.delete(api[apiId],data);
+    }catch (e){
+        Notify({type:"danger",message:"服务器错误"})
+    }
 }

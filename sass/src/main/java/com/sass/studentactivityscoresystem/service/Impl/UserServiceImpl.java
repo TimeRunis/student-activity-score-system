@@ -9,6 +9,8 @@ import com.sass.studentactivityscoresystem.mapper.UserMapper;
 import com.sass.studentactivityscoresystem.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     private final ReturnBody returnBody;
@@ -50,8 +52,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public Object userInfoById(int id){
-        return this.getBaseMapper().selectById(id);
+    public User userInfoById(int id){
+        return this.getOne(new LambdaQueryWrapper<User>().apply("{0}={0}", UUID.randomUUID().toString()).eq(User::getUserId,id));
     }
 
     @Override

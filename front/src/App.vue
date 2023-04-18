@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <router-view />
     <BottomMenu></BottomMenu>
   </div>
 </template>
@@ -9,10 +10,8 @@
 </style>
 <script>
 import BottomMenu from "@/components/BottomMenu";
-import HeadBar from "@/components/HeadBar";
 export default {
   components: {
-    HeadBar,
     BottomMenu
   },
 

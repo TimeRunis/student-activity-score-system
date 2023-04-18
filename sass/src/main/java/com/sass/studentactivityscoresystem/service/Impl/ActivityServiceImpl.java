@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sass.studentactivityscoresystem.entity.Activity;
-import com.sass.studentactivityscoresystem.entity.ActivitySubmit;
 import com.sass.studentactivityscoresystem.entity.ReturnBody;
-import com.sass.studentactivityscoresystem.entity.User;
 import com.sass.studentactivityscoresystem.mapper.ActivityMapper;
 import com.sass.studentactivityscoresystem.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,17 +31,14 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
 
     @Override
     public ReturnBody find(String key,String current,String size) {
-        if(!key.isEmpty()){
-            //分页参数
-            Page<Activity> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
-            //queryWrapper组装查询where条件
-            LambdaQueryWrapper<Activity> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.like(Activity::getActivityName,key).or().like(Activity::getActivityContent,key);
-            this.getBaseMapper().selectPage(page,queryWrapper);
-            returnBody.setBody(0,page);
-        }else {
-            returnBody.setBody(-1,null);
-        }
+        //分页参数
+        Page<Activity> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
+        //queryWrapper组装查询where条件
+        LambdaQueryWrapper<Activity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(Activity::getActivityName,key).or().like(Activity::getActivityContent,key);
+        this.getBaseMapper().selectPage(page,queryWrapper);
+
+        returnBody.setBody(0,page);
         return returnBody;
     }
 
@@ -53,7 +48,7 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
         Page<Activity> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
         //queryWrapper组装查询where条件
         LambdaQueryWrapper<Activity> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.select(Activity.class,fieldInfo->!fieldInfo.getColumn().equals("activity_content"));
+        queryWrapper.select(Activity.class,fieldInfo->!fieldInfo.getColumn().equals("activity_content")).orderByDesc(Activity::getDeadLine);
         this.getBaseMapper().selectPage(page,queryWrapper);
         returnBody.setBody(0,page);
         return returnBody;

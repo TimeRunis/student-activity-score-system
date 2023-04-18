@@ -7,12 +7,14 @@ import com.sass.studentactivityscoresystem.service.CollegeService;
 import com.sass.studentactivityscoresystem.utils.JwtUtils;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
+@Scope("prototype")
 @CrossOrigin(origins = "*")
 public class CollegeController extends BaseController implements GetController {
     private final CollegeService collegeService;

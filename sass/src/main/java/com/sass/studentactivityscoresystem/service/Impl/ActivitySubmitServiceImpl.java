@@ -38,6 +38,7 @@ public class ActivitySubmitServiceImpl extends ServiceImpl<ActivitySubmitMapper,
         //queryWrapper组装查询where条件
         LambdaQueryWrapper<ActivitySubmit> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ActivitySubmit::getUserId,userId);
+
         return this.getBaseMapper().selectPage(page,queryWrapper);
     }
 

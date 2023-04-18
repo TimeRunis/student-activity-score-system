@@ -51,7 +51,7 @@ public class Goods {
         this.goodsDetail = goodsDetail;
     }
 
-    public Integer getGoodsPrice() {
+    public int getGoodsPrice() {
         return goodsPrice;
     }
 

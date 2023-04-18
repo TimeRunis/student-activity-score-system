@@ -10,6 +10,7 @@ import com.sass.studentactivityscoresystem.entity.RespBody;
 import com.sass.studentactivityscoresystem.service.GoodsService;
 import com.sass.studentactivityscoresystem.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.Map;
 
 @RestController
+@Scope("prototype")
 @CrossOrigin(origins = "*")
 public class GoodsController extends BaseController implements PostController, PutController, GetController, DeleteController {
     private Goods goods;
@@ -96,10 +98,13 @@ public class GoodsController extends BaseController implements PostController, P
     public RespBody doGet(Map<Object, String> map, HttpServletRequest request) {
         //空参数检查
         if(!map.isEmpty()){
-            if(map.containsKey("current")&&map.containsKey("size")){
-                rep.setResp(0,goodsService.findAll(map.get("current"),map.get("size")),"查询成功");
-            }else if (map.containsKey("id")){
+            if (map.containsKey("id")){
                 rep.setResp(0,goodsService.getById(map.get("id")),"查询成功");
+            }else if(map.get("key")!=null){
+                rep.setResp(0,goodsService.find(map.get("key"),map.get("current"),map.get("size")),"查询成功");
+            }else if(map.containsKey("current")&&map.containsKey("size")){
+                rep.setResp(0,goodsService.findAll(map.get("current"),map.get("size")),"查询成功");
+
             }
         }else {
             rep.setResp(-1,null,"空参数");

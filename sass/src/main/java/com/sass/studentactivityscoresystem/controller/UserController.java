@@ -9,6 +9,7 @@ import com.sass.studentactivityscoresystem.service.UserService;
 import com.sass.studentactivityscoresystem.utils.CheckEntity;
 import com.sass.studentactivityscoresystem.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 
 @RestController
+@Scope("prototype")
 @CrossOrigin(origins = "*")
 public class UserController extends BaseController implements GetController, PutController {
     private final UserService userService;

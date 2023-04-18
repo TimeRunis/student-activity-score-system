@@ -11,6 +11,7 @@ import com.sass.studentactivityscoresystem.service.UserScoreService;
 import com.sass.studentactivityscoresystem.utils.JwtUtils;
 import com.sass.studentactivityscoresystem.utils.TimeTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@Scope("prototype")
 @CrossOrigin(origins = "*")
 public class ScoreCodeController extends BaseController implements GetController, PostController, DeleteController, PutController {
     private ScoreCodeService scoreCodeService;

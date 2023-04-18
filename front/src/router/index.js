@@ -3,10 +3,16 @@ import VueRouter from 'vue-router'
 import UserView from "@/views/UserView";
 import ActivityView from "@/views/ActivityView";
 import ActivityDetailView from "@/views/ActivityDetailView";
+import ShopView from "@/views/ShopView";
+import GoodsDetailView from "@/views/GoodsDetailView";
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path:"/",
+    redirect:"/activity"
+  },
   {
     path:"/user",
     name:"user",
@@ -21,6 +27,16 @@ const routes = [
     path:"/activityDetail",
     name:"activityDetail",
     component:ActivityDetailView
+  },
+  {
+    path:"/goodsDetail",
+    name:"goodsDetail",
+    component:GoodsDetailView
+  },
+  {
+    path:"/shop",
+    name:"shop",
+    component:ShopView
   }
 ]
 

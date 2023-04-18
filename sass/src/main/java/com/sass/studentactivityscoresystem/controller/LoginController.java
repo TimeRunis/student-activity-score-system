@@ -36,6 +36,7 @@ public class LoginController extends BaseController{
                     rep.setResp(-2,null,"未找到用户");
                 }
                 if(flag.length()>=30){
+                    map.remove("userPsw");
                     //登录成功并返回用户信息
                     map.put("token",flag);
                     map.put("info",userService.userInfoByMail(map.get("userMail").toString()));
