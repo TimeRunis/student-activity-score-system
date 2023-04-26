@@ -12,17 +12,22 @@ import org.springframework.stereotype.Service;
 public class ActivitySubmitServiceImpl extends ServiceImpl<ActivitySubmitMapper, ActivitySubmit> implements ActivitySubmitService {
 
     @Override
-    public Page<ActivitySubmit> findByAcidPage(String acId,String current,String size) {
+    public Page<ActivitySubmit> getByAcidPage(String acId,String current,String size) {
         //分页参数
         Page<ActivitySubmit> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
-        //queryWrapper组装查询where条件
-        LambdaQueryWrapper<ActivitySubmit> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ActivitySubmit::getActivityId,acId);
-        return this.getBaseMapper().selectPage(page,queryWrapper);
+        return this.getBaseMapper().getOneByUserId(page, Integer.parseInt(acId));
     }
 
     @Override
-    public Page<ActivitySubmit> findByUserNamePage(String userName, String current, String size) {
+    public Page<ActivitySubmit> getByUserIdPage(String userId,String current,String size) {
+        //分页参数
+        Page<ActivitySubmit> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
+        return this.getBaseMapper().getOneByUserId(page, Integer.parseInt(userId));
+    }
+
+
+    @Override
+    public Page<ActivitySubmit> getByUserNamePage(String userName, String current, String size) {
         //分页参数
         Page<ActivitySubmit> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
         //queryWrapper组装查询where条件
@@ -32,22 +37,9 @@ public class ActivitySubmitServiceImpl extends ServiceImpl<ActivitySubmitMapper,
     }
 
     @Override
-    public Page<ActivitySubmit> findByUserIdPage(String userId, String current, String size) {
-        //分页参数
-        Page<ActivitySubmit> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
-        //queryWrapper组装查询where条件
-        LambdaQueryWrapper<ActivitySubmit> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ActivitySubmit::getUserId,userId);
-
-        return this.getBaseMapper().selectPage(page,queryWrapper);
-    }
-
-    @Override
     public Page<ActivitySubmit> findAll(String current, String size) {
         //分页参数
         Page<ActivitySubmit> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
-        //queryWrapper组装查询where条件
-        LambdaQueryWrapper<ActivitySubmit> queryWrapper = new LambdaQueryWrapper<>();
-        return this.getBaseMapper().selectPage(page,queryWrapper);
+        return this.getBaseMapper().getAll(page);
     }
 }

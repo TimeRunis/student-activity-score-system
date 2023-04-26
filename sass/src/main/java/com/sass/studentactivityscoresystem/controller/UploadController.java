@@ -46,7 +46,6 @@ public class UploadController extends BaseController{
                 for(int i=0;i<fileName.size();i++){
                     fileName.set(i,url+fileName.get(i));
                 }
-
                 rep.setResp(0,fileName,"上传成功");
             }else {
                 rep.setResp(-1,null,"上传失败");

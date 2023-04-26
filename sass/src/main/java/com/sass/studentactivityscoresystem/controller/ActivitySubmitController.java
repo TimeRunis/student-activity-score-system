@@ -52,7 +52,7 @@ public class ActivitySubmitController extends BaseController implements GetContr
                     //acid查询
                     case 0:
                         if(JwtUtils.checkPermission(request.getHeader("token"),9)){
-                            rep.setResp(0,activitySubmitService.findByAcidPage(map.get(params[mode]),map.get("current"),map.get("size")),"查询成功");
+                            rep.setResp(0,activitySubmitService.getByAcidPage(map.get(params[mode]),map.get("current"),map.get("size")),"查询成功");
                         }else {
                             rep.setResp(-1,null,"权限不足");
                         }
@@ -60,7 +60,7 @@ public class ActivitySubmitController extends BaseController implements GetContr
                     //username查询
                     case 1:
                         if(JwtUtils.checkPermission(request.getHeader("token"),9)){
-                            rep.setResp(0,activitySubmitService.findByUserNamePage(map.get(params[mode]),map.get("current"),map.get("size")),"查询成功");
+                            rep.setResp(0,activitySubmitService.getByUserNamePage(map.get(params[mode]),map.get("current"),map.get("size")),"查询成功");
                         }else {
                             rep.setResp(-1,null,"权限不足");
                         }
@@ -68,7 +68,7 @@ public class ActivitySubmitController extends BaseController implements GetContr
                     //userid查询
                     case 2:
                         if(JwtUtils.checkPermission(request.getHeader("token"),9)|| Objects.equals(map.get(params[mode]), String.valueOf(JwtUtils.getUserId(request.getHeader("token"))))){
-                            rep.setResp(0,activitySubmitService.findByUserIdPage(map.get(params[mode]),map.get("current"),map.get("size")),"查询成功");
+                            rep.setResp(0,activitySubmitService.getByUserIdPage(map.get(params[mode]),map.get("current"),map.get("size")),"查询成功");
                         }else {
                             rep.setResp(-1,null,"权限不足");
                         }

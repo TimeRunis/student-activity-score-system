@@ -1,5 +1,6 @@
 package com.sass.studentactivityscoresystem.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import org.springframework.stereotype.Component;
 
@@ -10,8 +11,17 @@ public class ActivitySubmit {
     private int userId;
     private String userName;
     private int activityId;
+    @TableField(exist = false)
+    private Activity activity;
     private String submitTime;
 
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
 
     public String getUserName() {
         return userName;

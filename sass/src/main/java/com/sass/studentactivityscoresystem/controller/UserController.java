@@ -1,6 +1,7 @@
 package com.sass.studentactivityscoresystem.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.sass.studentactivityscoresystem.controller.method.DeleteController;
 import com.sass.studentactivityscoresystem.controller.method.GetController;
 import com.sass.studentactivityscoresystem.controller.method.PutController;
 import com.sass.studentactivityscoresystem.entity.RespBody;
@@ -10,10 +11,7 @@ import com.sass.studentactivityscoresystem.utils.CheckEntity;
 import com.sass.studentactivityscoresystem.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ import java.util.Map;
 @RestController
 @Scope("prototype")
 @CrossOrigin(origins = "*")
-public class UserController extends BaseController implements GetController, PutController {
+public class UserController extends BaseController implements GetController, PutController , DeleteController {
     private final UserService userService;
     private User user;
     private CheckEntity checkEntity;
@@ -67,7 +65,9 @@ public class UserController extends BaseController implements GetController, Put
                     }
                 }
                 else if (map.get("id")!=null){
-                    rep.setResp(0,userService.userInfoById(Integer.parseInt(map.get("id"))),"查询成功");
+                    rep.setResp(0,userService.userInfoByIdPage(Integer.parseInt(map.get("id")),map.get("current"),map.get("size")),"查询成功");
+                }else if(map.containsKey("current")&&map.containsKey("size")){
+                    rep.setResp(0,userService.findAll(map.get("current"),map.get("size")).getData(),"查询成功");
                 }
             }else {
                 rep.setResp(1,null,"权限不足");
@@ -113,6 +113,34 @@ public class UserController extends BaseController implements GetController, Put
                 }catch (Exception e){
                     rep.setResp(-1,null,"非法参数");
                 }
+            }
+        }else {
+            rep.setResp(-1,null,"空参数");
+        }
+        return rep;
+    }
+
+    @DeleteMapping("/user")
+    @Override
+    public RespBody doDelete(Map<Object, String> map, HttpServletRequest request) {
+        //空参数检查
+        if(!map.isEmpty()) {
+            //管理员权限检查
+            if (JwtUtils.checkPermission(request.getHeader("token"), 9)) {
+                try{
+                    //获取参数
+                    int userId= Integer.parseInt(map.get("userId"));
+                    if(userService.isExist(userId)){
+                        userService.removeById(userId);
+                        rep.setResp(0,null,"删除成功");
+                    }else {
+                        rep.setResp(-1,null,"用户不存在");
+                    }
+                }catch (Exception e){
+                    rep.setResp(-1,null,"获取参数失败");
+                }
+            }else {
+                rep.setResp(-1,null,"权限不足");
             }
         }else {
             rep.setResp(-1,null,"空参数");
