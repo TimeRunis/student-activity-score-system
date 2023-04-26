@@ -14,18 +14,21 @@
       </van-tabs>
       <div v-if="isLogin">
         <van-cell-group class="card" inset >
-          <van-cell title="我的信息" is-link @click="isPop=true;showUserInfo=true;"></van-cell>
-          <van-cell title="我的订单" is-link @click="isPop=true;showOrder=true;"></van-cell>
-          <van-cell title="我参加的活动" is-link @click="isPop=true;showActivity=true"></van-cell>
+          <van-cell title="我的信息" is-link @click="isPop=true;showUserInfo=true;" icon="info-o"></van-cell>
+          <van-cell title="我的订单" is-link @click="isPop=true;showOrder=true;" icon="orders-o"></van-cell>
+          <van-cell title="我参加的活动" is-link @click="isPop=true;showActivity=true" icon="smile-comment-o"></van-cell>
+          <van-cell title="积分码" is-link @click="isPop=true;showCode=true" icon="qr"></van-cell>
+          <van-cell v-show="isAdmin" title="管理页面" is-link @click="$router.push('admin')" icon="manager-o"></van-cell>
         </van-cell-group>
       </div>
       <van-popup v-model="isPop" closeable @close="closePop" position="bottom" :style="{ height:'100%' }">
-        <UserInfo v-show="showUserInfo" style="margin-top: 60px"></UserInfo>
-        <div v-show="showOrder">123</div>
-        <user-activity-submit :is-start="true" style="margin-top: 60px"></user-activity-submit>
+        <UserInfo v-if="showUserInfo" style="margin-top: 60px"></UserInfo>
+        <div v-if="showOrder">123</div>
+        <user-activity-submit v-if="showActivity" :is-start="true" style="margin-top: 60px"></user-activity-submit>
+        <code-info v-if="showCode" style="margin-top: 60px"></code-info>
       </van-popup>
-
     </div>
+    <bottom-menu></bottom-menu>
   </div>
 </template>
 
@@ -34,14 +37,17 @@ import Login from "@/components/User/Login";
 import UserInfo from "@/components/User/UserInfo";
 import Register from "@/components/User/Register";
 import UserActivitySubmit from "@/components/User/UserActivitySubmit";
+import BottomMenu from "@/components/BottomMenu";
+import CodeInfo from "@/components/ScoreCode/CodeInfo";
 
 export default {
   name: "UserView",
-  components: {UserActivitySubmit, Register, UserInfo, Login},
+  components: {CodeInfo, BottomMenu, UserActivitySubmit, Register, UserInfo, Login},
   beforeMount() {
     this.isLogin = this.$cookies.isKey("token");
+    this.isAdmin = localStorage.getItem("authorityLevel")>=9;
     if(!this.isLogin){
-      this.title="登录"
+      this.title="登录";
     }
   },
   data(){
@@ -52,6 +58,8 @@ export default {
       showUserInfo:false,
       showOrder:false,
       showActivity:false,
+      showCode:false,
+      isAdmin:false,
     }
   },
   methods:{
@@ -60,7 +68,8 @@ export default {
         this.showActivity=false;
         this.showUserInfo=false;
         this.showOrder=false;
-      },200)
+        this.showCode=false;
+      },200);
     }
   },
 }

@@ -39,6 +39,7 @@ let api={
     "activitySubmit":baseUrl+"activitySubmit",
     "goods":baseUrl+"goods",
     "goodsOrder":baseUrl+"goodsOrder",
+    "scoreCode":baseUrl+"scoreCode",
 }
 
 function data2url(apiId,data){
@@ -83,7 +84,7 @@ export function apiPut(apiId,data){
 
 export function apiDelete(apiId,data){
     try{
-        return axios.delete(api[apiId],data);
+        return axios.delete(data2url(apiId,data));
     }catch (e){
         Notify({type:"danger",message:"服务器错误"})
     }
