@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @Scope("prototype")
@@ -44,7 +45,7 @@ public class ActivityController extends BaseController implements GetController,
                         rep.setResp(returnBody.getFlag(), null, "出现错误");
                     }
 
-                } else if (map.get("key")!=null) {
+                } else if (map.get("key")!=null&& !Objects.equals(map.get("key"), "")) {
                     //内容和名字模糊查找
                     returnBody = activityService.find(map.get("key"),map.get("current"),map.get("size"));
                     if (returnBody.getFlag() == 0) {
@@ -52,9 +53,17 @@ public class ActivityController extends BaseController implements GetController,
                     } else {
                         rep.setResp(returnBody.getFlag(), null, "出现错误");
                     }
-                }else {
-                    //查询所有内容
+                }else if(Objects.equals(map.get("all"), "true")){
+                    //查询所有活动
                     returnBody = activityService.findAll(map.get("current"),map.get("size"));
+                    if (returnBody.getFlag() == 0) {
+                        rep.setResp(0, returnBody.getData(), "查询成功");
+                    } else {
+                        rep.setResp(returnBody.getFlag(), null, "出现错误");
+                    }
+                } else {
+                    //查询所有未过期活动
+                    returnBody = activityService.findAllActiveActivity(map.get("current"),map.get("size"));
                     if (returnBody.getFlag() == 0) {
                         rep.setResp(0, returnBody.getData(), "查询成功");
                     } else {
@@ -105,16 +114,19 @@ public class ActivityController extends BaseController implements GetController,
     @PutMapping("/activity")
     @Override
     public RespBody doPut(Map<Object, String> map, HttpServletRequest request) {
+        System.out.println();
         //空参数检测
         if(!map.isEmpty()){
             //权限检查
             if(JwtUtils.checkPermission(request.getHeader("token"),9)){
                 try{
                     activity= (Activity) activityService.getActivityInfoById(Integer.parseInt(map.get("activityId"))).getData();
-                    activity.setActivityName(map.get("name"));
-                    activity.setActivityContent(map.get("content"));
+                    activity.setActivityName(map.get("activityName"));
+                    activity.setActivityContent(map.get("activityContent"));
                     activity.setStartTime(map.get("startTime"));
                     activity.setDeadLine(map.get("deadLine"));
+                    activity.setHeadImg(map.get("headImg"));
+                    activity.setUpdateTime(null);
                     activity.setUserId(JwtUtils.getUserId(request.getHeader("token")));
                 }catch (Exception e){
                     rep.setResp(-1,null,"非法参数");

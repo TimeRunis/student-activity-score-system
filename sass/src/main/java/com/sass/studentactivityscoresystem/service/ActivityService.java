@@ -11,6 +11,9 @@ public interface ActivityService extends IService<Activity> {
     ReturnBody findAll(String current,String size);
     //id查询活动信息
     ReturnBody getActivityInfoById(int id);
+
+    ReturnBody findAllActiveActivity(String current, String size);
+
     //发布活动
     ReturnBody addActivity(Activity activity);
     //更新活动数据
