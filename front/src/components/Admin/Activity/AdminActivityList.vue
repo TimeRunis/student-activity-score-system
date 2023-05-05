@@ -1,10 +1,9 @@
 <template>
   <div style="display: flex;flex-wrap: wrap;justify-content: center">
-
     <div class="cart_box">
       <van-grid column-num="2">
-        <van-grid-item text="用户" />
-        <van-grid-item text="权限" />
+        <van-grid-item text="活动名" />
+        <van-grid-item text="活动ID" />
       </van-grid>
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list
@@ -15,32 +14,30 @@
         >
           <div v-for="(item,i) in list" :key="i" style="display: flex;flex-wrap: wrap;justify-content: center">
             <van-swipe-cell style="width: 100%">
-              <van-cell :border="false" :title="item['userName']" icon="user-o" :value="item['authorityLevel']" />
+              <van-cell :border="false" :title="item['activityName']" :value="item['activityId']" icon="smile-comment-o"/>
               <template #right>
-                <van-button square text="详情" type="primary" @click="checkUserInfo(i)" />
-                <van-button square text="删除" type="danger" @click="deleteUser(i)" />
+                <van-button square text="详情" type="primary" @click="$router.push('/admin/activity/edit?id='+item['activityId'])" />
+                <van-button square text="删除" type="danger" @click="deleteActivity(i)" />
               </template>
             </van-swipe-cell>
           </div>
         </van-list>
       </van-pull-refresh>
-
     </div>
   </div>
 </template>
 
 <script>
 import {apiDelete, apiGet} from "@/util/Api";
-import AdminUserInfo from "@/components/Admin/User/AdminUserInfo";
 import {Dialog, Notify} from "vant";
-import AdminUserAdd from "@/components/Admin/User/AdminUserAdd";
 
 export default {
-  name: "AdminUserList",
-  components: {AdminUserAdd, AdminUserInfo},
+  name: "AdminActivityList",
+  components: {},
   data() {
     return {
       getData:{
+        all:true,
         current:1,
         size:10
       },
@@ -65,7 +62,7 @@ export default {
           this.finished = true;
         } else {
           //获取数据
-          apiGet('user',this.getData).then((resp)=>{
+          apiGet('activity',this.getData).then((resp)=>{
             if(resp.data['code']===0&&resp.data['data']['records']){
               for(let i in resp.data['data']['records']){
                 this.list.push(resp.data['data']['records'][i]);
@@ -94,16 +91,15 @@ export default {
       this.loading = true;
       this.onLoad();
     },
-    checkUserInfo(index){
-      this.$parent.showUserInfo(this.list[index]);
+    checkActivityInfo(index){
     },
-    deleteUser(index){
+    deleteActivity(index){
       Dialog.confirm({
         title: '确认',
-        message: '确定要删除这个用户吗',
+        message: '确定要删除这个活动吗',
       })
           .then(() => {
-            apiDelete('user',{userId:this.list[index]['userId']}).then((resp)=>{
+            apiDelete('activity',{id:this.list[index]['activityId']}).then((resp)=>{
               if(resp.data['code']===0){
                 Notify({type:"success",message:resp.data['message']});
                 this.$delete(this.list,index);
@@ -116,21 +112,13 @@ export default {
       switch (type){
         case 0:
           this.getData={
-            name:value,
+            key:value,
             current:1,
             size:10
           };
           this.onRefresh();
           break;
         case 1:
-          this.getData={
-            relName:value,
-            current:1,
-            size:10
-          };
-          this.onRefresh();
-          break;
-        case 2:
           this.getData={
             id:value,
             current:1,

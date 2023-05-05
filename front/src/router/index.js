@@ -6,7 +6,9 @@ import ActivityDetailView from "@/views/Activity/ActivityDetailView";
 import ShopView from "@/views/Shop/ShopView";
 import GoodsDetailView from "@/views/Goods/GoodsDetailView";
 import AdminView from "@/views/Admin/AdminView";
-import AdminUserView from "@/views/Admin/AdminUserView";
+import AdminUserView from "@/views/Admin/User/AdminUserView";
+import AdminActivityView from "@/views/Admin/Activity/AdminActivityView";
+import AdminActivityEditorView from "@/views/Admin/Activity/AdminActivityEditorView";
 
 Vue.use(VueRouter)
 
@@ -52,6 +54,17 @@ const routes = [
     path:"/admin/user",
     name:"adminUser",
     component:AdminUserView
+  },
+  {
+    path:"/admin/activity",
+    name:"adminActivity",
+    component:AdminActivityView
+  }
+  ,
+  {
+    path:"/admin/activity/edit",
+    name:"adminActivityEditor",
+    component:AdminActivityEditorView
   }
 ]
 

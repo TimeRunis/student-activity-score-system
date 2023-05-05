@@ -40,6 +40,7 @@ let api={
     "goods":baseUrl+"goods",
     "goodsOrder":baseUrl+"goodsOrder",
     "scoreCode":baseUrl+"scoreCode",
+    "fileUpload":baseUrl+"fileUpload",
 }
 
 function data2url(apiId,data){
@@ -55,6 +56,15 @@ export function message(resp){
         Notify({ type: 'success', message: resp["message"] });
     }else {
         Notify({ type: 'danger', message: resp["message"] });
+    }
+}
+
+export function apiUpload(apiId,file){
+    try{
+        let tempAxios=axios.create();
+        return tempAxios.post(api[apiId],file,{headers:{"Content-Type":"multipart/form-data","token":getCookie("token")}});
+    }catch (e){
+        Notify({type:"danger",message:"服务器错误"})
     }
 }
 

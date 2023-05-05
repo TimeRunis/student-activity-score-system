@@ -16,7 +16,7 @@
 <script>
 import {apiGet, apiPut} from "@/util/Api";
 import {Notify} from "vant";
-import {dateFormat} from "@/util/DataTransformer";
+import {dateFormat} from "@/util/DateTransformer";
 
 export default {
   name: "CodeInfo",

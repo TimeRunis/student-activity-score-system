@@ -13,16 +13,14 @@
           </van-cell>
         </div>
       </van-cell>
-      <van-cell>
-        <van-button :disabled="isDeadLine" style="width: 100%" round type="primary" @click="acSubmit()">参加活动</van-button>
-      </van-cell>
+      <van-button :disabled="isDeadLine" style="width: 100%" type="primary" @click="acSubmit">参加</van-button>
     </div>
   </div>
 </template>
 
 <script>
 import {apiGet, apiPost, message} from "@/util/Api";
-import {string2Date} from "@/util/DataTransformer";
+import {string2Date} from "@/util/DateTransformer";
 import {Notify} from "vant";
 
 
@@ -31,40 +29,56 @@ export default {
   components: {},
   props:['acId'],
   beforeMount() {
-    //获取参数
-    this.param['id']=this.acId
-    this.submitParam.acId=this.acId
-    //获取活动详情
-    apiGet("activity",this.param).then((resp)=>{
-      this.detail=resp.data['data']
-      //获取时间
-      this.todayDate=new Date()
-      //获取截止时间
-      this.deadLine=new Date(string2Date(this.detail['deadLine']))
-      this.isDeadLine=this.todayDate>=this.deadLine
-      if (this.isDeadLine){
-        Notify({type:"warning",message:"活动已经结束了"})
-      }
-    })
-
+    if(this.acId){
+      //获取参数
+      this.param['id']=this.acId
+      this.submitParam.acId=this.acId
+      //获取活动详情
+      apiGet("activity",this.param).then((resp)=>{
+        this.detail=resp.data['data']
+        //获取时间
+        this.todayDate=new Date()
+        //获取截止时间
+        this.deadLine=new Date(string2Date(this.detail['deadLine']))
+        this.isDeadLine=this.todayDate>=this.deadLine
+        if (this.isDeadLine){
+          Notify({type:"warning",message:"活动已经结束了"})
+        }
+      })
+    }
   },
   methods:{
     acSubmit(){
       apiPost("activitySubmit",this.submitParam).then((resp)=>{
-          message(resp.data)
+       if(resp.data['code']===0){
+         message(resp.data);
+         setTimeout(()=>{location.reload()},500)
+       }else {
+         message(resp.data);
+       }
       })
-    }
+    },
+    setDetail(detail){
+      this.detail=detail;
+      //获取截止时间
+      this.deadLine=new Date(string2Date(this.detail['deadLine']));
+    },
+    setContent(content){
+      this.detail['activityContent']=content;
+    },
+    setActivity(activity){
+      this.detail=activity;
+    },
   },
   data(){
     return{
       param:{
         id:'',
       },
-      isDeadLine:true,
       submitParam:{
         acId:0,
       },
-      todayDate:'',
+      isDeadLine:true,
       deadLine:'',
       detail:{},
     }

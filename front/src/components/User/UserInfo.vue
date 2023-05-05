@@ -76,7 +76,6 @@ export default {
     onConfirm(value){
       let date = new Date(value)
       this.userinfo["birthday"]=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()
-      console.info(value)
       this.showDate = false
     },
     out(){

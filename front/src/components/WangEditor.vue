@@ -23,7 +23,6 @@ import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 export default {
   name:"WangEditor",
   components: { Editor, Toolbar },
-  props:['content'],
   data() {
     return {
       editor: null,
@@ -35,40 +34,56 @@ export default {
           uploadImage:{
             server: 'http://localhost:8080/fileUpload',
             //表单文件名
-            fieldName: 'uploadFiles',
+            fieldName: 'file',
             // 添加header
             headers: {
               token:this.$cookies.get('token')
             },
-            // 选择文件时的类型限制，默认为 ['image/*'] 。如不想限制，则设置为 []
+            // 选择文件时的类型限制
             allowedFileTypes: ['image/*'],
             customInsert(res,insertFn){
               for(let i in res['data']){
                 insertFn(res['data'][i])
               }
             }
-
+          },
+          uploadVideo:{
+            server: 'http://localhost:8080/fileUpload',
+            //表单文件名
+            fieldName: 'file',
+            // 添加header
+            headers: {
+              token:this.$cookies.get('token')
+            },
+            // 单个文件的最大体积限制
+            maxFileSize: 200 * 1024 * 1024,
+            // 选择文件时的类型限制
+            allowedFileTypes: ['video/*'],
+            customInsert(res,insertFn){
+              for(let i in res['data']){
+                insertFn(res['data'][i])
+              }
+            }
           }
         }
       },
-      mode: 'default', // or 'simple'
+      mode: 'default',
     }
   },
   methods: {
     onCreated(editor) {
-      this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
+      this.editor = Object.seal(editor)
+    },
+    setContent(content) {
+      this.html=content;
     },
   },
   mounted() {
-    // 模拟 ajax 请求，异步渲染编辑器
-    setTimeout(() => {
-      this.html = this.content
-    }, 1500)
   },
   beforeDestroy() {
     const editor = this.editor
     if (editor == null) return
-    editor.destroy() // 组件销毁时，及时销毁编辑器
+    editor.destroy()
   }
 }
 
