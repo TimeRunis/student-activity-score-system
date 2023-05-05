@@ -11,13 +11,10 @@ public interface ActivityService extends IService<Activity> {
     ReturnBody findAll(String current,String size);
     //id查询活动信息
     ReturnBody getActivityInfoById(int id);
-
+    //查询所有进行中的活动
     ReturnBody findAllActiveActivity(String current, String size);
-
     //发布活动
     ReturnBody addActivity(Activity activity);
     //更新活动数据
     ReturnBody updateActivity(Activity activity);
-    //删除活动
-    ReturnBody removeActivityById(int id);
 }

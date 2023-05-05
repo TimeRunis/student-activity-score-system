@@ -87,10 +87,11 @@ public class ActivityController extends BaseController implements GetController,
             //权限检查
             if(JwtUtils.checkPermission(request.getHeader("token"),9)){
                 try{
-                    activity.setActivityName(map.get("name"));
-                    activity.setActivityContent(map.get("content"));
+                    activity.setActivityName(map.get("activityName"));
+                    activity.setActivityContent(map.get("activityContent"));
                     activity.setStartTime(map.get("startTime"));
                     activity.setDeadLine(map.get("deadLine"));
+                    activity.setHeadImg(map.get("headImg"));
                     activity.setUserId(JwtUtils.getUserId(request.getHeader("token")));
                 }catch (Exception e){
                     rep.setResp(-1,null,"非法参数");
@@ -157,12 +158,8 @@ public class ActivityController extends BaseController implements GetController,
             if(JwtUtils.checkPermission(request.getHeader("token"),9)){
                 try{
                     if(activityService.getActivityInfoById(acId).getFlag()==0){
-                        if(activityService.removeActivityById(acId).getFlag()==0){
-                            rep.setResp(0,null,"删除成功");
-                        }else {
-                            rep.setResp(-1,null,"删除失败");
-                        }
-
+                        activityService.removeById(acId);
+                        rep.setResp(0,null,"删除成功");
                     }else {
                         rep.setResp(-1,null,"不存在的活动");
                     }

@@ -63,7 +63,7 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
         //queryWrapper组装查询where条件
         LambdaQueryWrapper<Activity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.select(Activity.class,fieldInfo->!fieldInfo.getColumn().equals("activity_content")).gt(Activity::getDeadLine,new Date());
-        this.getBaseMapper().selectPage(page,queryWrapper);
+            this.getBaseMapper().selectPage(page,queryWrapper);
         returnBody.setBody(0,page);
         return returnBody;
     }
@@ -95,16 +95,6 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
             }
         }else {
             //数据空
-            returnBody.setBody(-1,null);
-        }
-        return returnBody;
-    }
-
-    @Override
-    public ReturnBody removeActivityById(int id) {
-        if(id>0){
-            returnBody.setBody(this.getBaseMapper().deleteById(id),null);
-        }else {
             returnBody.setBody(-1,null);
         }
         return returnBody;

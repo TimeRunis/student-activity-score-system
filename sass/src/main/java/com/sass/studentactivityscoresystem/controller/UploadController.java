@@ -26,7 +26,7 @@ public class UploadController extends BaseController{
     }
 
     @PostMapping("/fileUpload")
-    public RespBody doPost(@RequestParam("uploadFiles") MultipartFile[] multipartFile, HttpServletRequest request){
+    public RespBody doPost(@RequestParam("file") MultipartFile[] multipartFile, HttpServletRequest request){
         String date= new SimpleDateFormat("yyyy/MM/dd/").format(new Date());
         String path= FilePathConfig.path+date;
         String url=request.getScheme() + "://" + request.getServerName() + ":" +request.getServerPort() +FilePathConfig.url+date;
