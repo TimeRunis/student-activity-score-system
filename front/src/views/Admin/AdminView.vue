@@ -18,7 +18,7 @@
         <van-grid>
           <van-grid-item icon="orders-o" text="订单" @click="$router.push('/admin/order')" />
           <van-grid-item icon="balance-o" text="积分" @click="$router.push('/admin/score')" />
-          <van-grid-item icon="qr" text="积分码" @click="$router.push('/admin/score/code')" />
+          <van-grid-item icon="qr" text="积分码" @click="$router.push('/admin/scoreCode')" />
         </van-grid>
       </div>
     </div>
@@ -26,8 +26,19 @@
 </template>
 
 <script>
+import {apiGet} from "@/util/Api";
+import {Notify} from "vant";
+
 export default {
-  name: "AdminView"
+  name: "AdminView",
+  beforeMount() {
+    apiGet("user",{current:1,size:1}).then((resp)=>{
+      if (resp.data['code']!==0){
+        Notify({type:"danger",message:"权限不足"});
+        this.$router.push("/");
+      }
+    })
+  }
 }
 </script>
 

@@ -2,8 +2,8 @@
   <div style="display: flex;flex-wrap: wrap;justify-content: center">
     <div class="cart_box">
       <van-grid column-num="2">
-        <van-grid-item text="活动名" />
-        <van-grid-item text="活动ID" />
+        <van-grid-item text="商品名" />
+        <van-grid-item text="商品ID" />
       </van-grid>
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list
@@ -14,10 +14,10 @@
         >
           <div v-for="(item,i) in list" :key="i" style="display: flex;flex-wrap: wrap;justify-content: center">
             <van-swipe-cell style="width: 100%">
-              <van-cell title-class="van-ellipsis" :border="false" :title="item['activityName']" :value="item['activityId']" icon="smile-comment-o"/>
+              <van-cell title-class="van-ellipsis" :border="false" :title="item['goodsName']" :value="item['goodsId']" icon="shop-o"/>
               <template #right>
-                <van-button square text="详情" type="primary" @click="$router.push('/admin/activity/edit?id='+item['activityId'])" />
-                <van-button square text="删除" type="danger" @click="deleteActivity(i)" />
+                <van-button square text="详情" type="primary" @click="$router.push('/admin/shop/edit?id='+item['goodsId'])" />
+                <van-button square text="删除" type="danger" @click="deleteShop(i)" />
               </template>
             </van-swipe-cell>
           </div>
@@ -32,12 +32,11 @@ import {apiDelete, apiGet} from "@/util/Api";
 import {Dialog, Notify} from "vant";
 
 export default {
-  name: "AdminActivityList",
+  name: "AdminShopList",
   components: {},
   data() {
     return {
       getData:{
-        all:true,
         current:1,
         size:10
       },
@@ -62,7 +61,7 @@ export default {
           this.finished = true;
         } else {
           //获取数据
-          apiGet('activity',this.getData).then((resp)=>{
+          apiGet('goods',this.getData).then((resp)=>{
             if(resp.data['code']===0&&resp.data['data']['records']){
               for(let i in resp.data['data']['records']){
                 this.list.push(resp.data['data']['records'][i]);
@@ -91,15 +90,13 @@ export default {
       this.loading = true;
       this.onLoad();
     },
-    checkActivityInfo(index){
-    },
-    deleteActivity(index){
+    deleteShop(index){
       Dialog.confirm({
         title: '确认',
         message: '确定要删除这个活动吗',
       })
           .then(() => {
-            apiDelete('activity',{id:this.list[index]['activityId']}).then((resp)=>{
+            apiDelete('goods',{id:this.list[index]['goodsId']}).then((resp)=>{
               if(resp.data['code']===0){
                 Notify({type:"success",message:resp.data['message']});
                 this.$delete(this.list,index);

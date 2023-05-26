@@ -104,12 +104,13 @@ export default {
     };
   },
   beforeMount() {
-    apiGet("college").then((resp)=>{
+    apiGet("college",{current:1,size:100}).then((resp)=>{
       if (resp.data["code"]===0){
-        this.collegeList=resp.data['data']
-        for (let i in resp.data['data']){
-          this.collegeColumns.push(resp.data['data'][i]["collegeName"])
+        this.collegeList=resp.data['data']['records']
+        for (let i in resp.data['data']['records']){
+          this.collegeColumns.push(resp.data['data']['records'][i]["collegeName"])
         }
+        console.info(this.collegeColumns)
       }else {
         Notify({type:'danger',message:'获取学院失败'})
       }

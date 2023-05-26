@@ -2,8 +2,8 @@
   <div style="display: flex;flex-wrap: wrap;justify-content: center">
     <div class="cart_box">
       <van-grid column-num="2">
-        <van-grid-item text="活动名" />
-        <van-grid-item text="活动ID" />
+        <van-grid-item text="订单ID" />
+        <van-grid-item text="订单状态" />
       </van-grid>
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list
@@ -14,10 +14,10 @@
         >
           <div v-for="(item,i) in list" :key="i" style="display: flex;flex-wrap: wrap;justify-content: center">
             <van-swipe-cell style="width: 100%">
-              <van-cell title-class="van-ellipsis" :border="false" :title="item['activityName']" :value="item['activityId']" icon="smile-comment-o"/>
+              <van-cell title-class="van-ellipsis" :border="false" :title="item['goId']" :value="item['endTime']?'已完成':'未完成'" icon="orders-o"/>
               <template #right>
-                <van-button square text="详情" type="primary" @click="$router.push('/admin/activity/edit?id='+item['activityId'])" />
-                <van-button square text="删除" type="danger" @click="deleteActivity(i)" />
+                <van-button square text="操作" type="primary" @click="editOrder(i)" />
+                <van-button square text="删除" type="danger" @click="deleteOrder(i)" />
               </template>
             </van-swipe-cell>
           </div>
@@ -32,12 +32,11 @@ import {apiDelete, apiGet} from "@/util/Api";
 import {Dialog, Notify} from "vant";
 
 export default {
-  name: "AdminActivityList",
+  name: "AdminOrderList",
   components: {},
   data() {
     return {
       getData:{
-        all:true,
         current:1,
         size:10
       },
@@ -62,7 +61,7 @@ export default {
           this.finished = true;
         } else {
           //获取数据
-          apiGet('activity',this.getData).then((resp)=>{
+          apiGet('goodsOrder',this.getData).then((resp)=>{
             if(resp.data['code']===0&&resp.data['data']['records']){
               for(let i in resp.data['data']['records']){
                 this.list.push(resp.data['data']['records'][i]);
@@ -91,15 +90,13 @@ export default {
       this.loading = true;
       this.onLoad();
     },
-    checkActivityInfo(index){
-    },
-    deleteActivity(index){
+    deleteOrder(index){
       Dialog.confirm({
         title: '确认',
-        message: '确定要删除这个活动吗',
+        message: '确定要删除这个订单吗',
       })
           .then(() => {
-            apiDelete('activity',{id:this.list[index]['activityId']}).then((resp)=>{
+            apiDelete('goodsOrder',{id:this.list[index]['OrderId']}).then((resp)=>{
               if(resp.data['code']===0){
                 Notify({type:"success",message:resp.data['message']});
                 this.$delete(this.list,index);
@@ -111,16 +108,44 @@ export default {
     search(value,type){
       switch (type){
         case 0:
+          //订单id搜索
           this.getData={
-            key:value,
+            goId:value,
             current:1,
             size:10
           };
           this.onRefresh();
           break;
         case 1:
+          //用户id搜索
           this.getData={
-            id:value,
+            userId:value,
+            current:1,
+            size:10
+          };
+          this.onRefresh();
+          break;
+        case 2:
+          //商品id搜索
+          this.getData={
+            goodsId:value,
+            current:1,
+            size:10
+          };
+          this.onRefresh();
+          break;
+        case 3:
+          //过滤
+          this.getData={
+            filter:value,
+            current:1,
+            size:10
+          };
+          this.onRefresh();
+          break;
+        default:
+          //全部查询
+          this.getData={
             current:1,
             size:10
           };

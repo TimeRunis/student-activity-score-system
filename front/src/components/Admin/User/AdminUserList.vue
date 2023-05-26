@@ -15,7 +15,7 @@
         >
           <div v-for="(item,i) in list" :key="i" style="display: flex;flex-wrap: wrap;justify-content: center">
             <van-swipe-cell style="width: 100%">
-              <van-cell :border="false" :title="item['userName']" icon="user-o" :value="item['authorityLevel']" />
+              <van-cell title-class="van-ellipsis" :border="false" :title="item['userName']" icon="user-o" :value="item['authorityLevel']" />
               <template #right>
                 <van-button square text="详情" type="primary" @click="checkUserInfo(i)" />
                 <van-button square text="删除" type="danger" @click="deleteUser(i)" />

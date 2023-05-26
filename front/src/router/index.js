@@ -9,6 +9,12 @@ import AdminView from "@/views/Admin/AdminView";
 import AdminUserView from "@/views/Admin/User/AdminUserView";
 import AdminActivityView from "@/views/Admin/Activity/AdminActivityView";
 import AdminActivityEditorView from "@/views/Admin/Activity/AdminActivityEditorView";
+import AdminCollegeView from "@/views/Admin/College/AdminCollegeView";
+import AdminShopView from "@/views/Admin/Shop/AdminShopView";
+import AdminShopEditorView from "@/views/Admin/Shop/AdminShopEditorView";
+import AdminScoreView from "@/views/Admin/Score/AdminScoreView";
+import AdminScoreCodeView from "@/views/Admin/ScoreCode/AdminScoreCodeView";
+import AdminOrderView from "@/views/Admin/Order/AdminOrderView";
 
 Vue.use(VueRouter)
 
@@ -59,12 +65,41 @@ const routes = [
     path:"/admin/activity",
     name:"adminActivity",
     component:AdminActivityView
-  }
-  ,
+  },
+  {
+    path:"/admin/shop",
+    name:"adminShop",
+    component:AdminShopView
+  },
+  {
+    path:"/admin/shop/edit",
+    name:"adminShopEdit",
+    component:AdminShopEditorView
+  },
+  {
+    path:"/admin/college",
+    name:"adminCollege",
+    component:AdminCollegeView
+  },
   {
     path:"/admin/activity/edit",
     name:"adminActivityEditor",
     component:AdminActivityEditorView
+  },
+  {
+    path:"/admin/score",
+    name:"adminScore",
+    component:AdminScoreView
+  },
+  {
+    path:"/admin/scoreCode",
+    name:"adminScoreCode",
+    component:AdminScoreCodeView
+  },
+  {
+    path:"/admin/order",
+    name:"adminOrderCode",
+    component:AdminOrderView
   }
 ]
 

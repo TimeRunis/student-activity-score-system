@@ -41,25 +41,43 @@
 <script>
 import {apiGet, apiPost} from "@/util/Api";
 import {Dialog} from "vant";
+import {string2Date} from "@/util/DateTransformer";
 
 export default {
   name: "GoodsDetail",
   components: {},
   props:['gsId'],
   beforeMount() {
-    //获取参数
-    this.param['id']=this.gsId
-    this.submitParam.goodsId=this.gsId;
-    //获取商品详情
-    apiGet("goods",this.param).then((resp)=>{
-      this.detail=resp.data['data'];
-      this.goods.info=resp.data['data'];
-      this.sku.stock_num=this.detail['goodsNumber'];
-      this.sku.price=this.detail['goodsPrice'];
-    })
+    if(this.gsId){
+      //获取参数
+      this.param['id']=this.gsId;
+      this.submitParam.goodsId=this.gsId;
+      //获取商品详情
+      apiGet("goods",this.param).then((resp)=>{
+        this.detail=resp.data['data'];
+        this.goods.info=resp.data['data'];
+        this.sku.stock_num=this.detail['goodsNumber'];
+        this.sku.price=this.detail['goodsPrice'];
+      })
+    }
 
   },
   methods:{
+    setGoodsSku(sku,info){
+      this.sku.stock_num=parseInt(sku['stock_num']);
+      this.sku.price=parseInt(sku['price']);
+      this.goods=info;
+
+    },
+    setDetail(detail){
+      this.detail=detail;
+    },
+    setContent(content){
+      this.detail['goodsDetail']=content;
+    },
+    setGoods(goods){
+      this.detail=goods;
+    },
     onBuy(skuData){
       //参数初始化
       this.orderNo=0;

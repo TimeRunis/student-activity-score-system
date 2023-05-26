@@ -22,6 +22,6 @@ export function dateFormat(date) {
 
 function showTime(t) {
     let time
-    time = t > 10 ? t : '0' + t
+    time = t >= 10 ? t : '0' + t
     return time
 }

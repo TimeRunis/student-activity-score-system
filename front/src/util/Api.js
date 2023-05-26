@@ -1,5 +1,6 @@
 import axios from "axios";
 import {Notify} from "vant";
+import {api} from "../../public/ApiList";
 
 function getCookie(cname) {
     let name = cname + "=";
@@ -11,7 +12,6 @@ function getCookie(cname) {
         }
     }
 }
-
 
 //请求拦截器
 axios.interceptors.request.use(function (config) {
@@ -29,19 +29,6 @@ axios.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 
-let baseUrl="http://localhost:8080/";
-let api={
-    "activity":baseUrl+"activity",
-    "login":baseUrl+"login",
-    "user":baseUrl+"user",
-    "register":baseUrl+"register",
-    "college":baseUrl+"college",
-    "activitySubmit":baseUrl+"activitySubmit",
-    "goods":baseUrl+"goods",
-    "goodsOrder":baseUrl+"goodsOrder",
-    "scoreCode":baseUrl+"scoreCode",
-    "fileUpload":baseUrl+"fileUpload",
-}
 
 function data2url(apiId,data){
     let url=api[apiId]+"?"
