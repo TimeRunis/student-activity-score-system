@@ -1,6 +1,8 @@
 package com.sass.studentactivityscoresystem.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.sass.studentactivityscoresystem.controller.method.GetController;
+import com.sass.studentactivityscoresystem.controller.method.PutController;
 import com.sass.studentactivityscoresystem.entity.College;
 import com.sass.studentactivityscoresystem.entity.RespBody;
 import com.sass.studentactivityscoresystem.service.CollegeService;
@@ -16,7 +18,7 @@ import java.util.Map;
 @RestController
 @Scope("prototype")
 @CrossOrigin(origins = "*")
-public class CollegeController extends BaseController implements GetController {
+public class CollegeController extends BaseController implements GetController, PutController {
     private final CollegeService collegeService;
     private College college;
 
@@ -32,11 +34,13 @@ public class CollegeController extends BaseController implements GetController {
         if (!map.isEmpty()){
             if(map.containsKey("id")){
                 rep.setResp(0,collegeService.collegeInfoById(Integer.parseInt(map.get("id"))),"查询成功");
-            }else {
-                rep.setResp(0,collegeService.list(),"查询成功");
+            }else if(map.containsKey("key")&&map.containsKey("current")&&map.containsKey("size")){
+                rep.setResp(0,collegeService.findByName(map.get("key"),map.get("current"),map.get("size")),"查询成功");
+            } else if(map.containsKey("current")&&map.containsKey("size")){
+                rep.setResp(0,collegeService.findAllCollege(map.get("current"),map.get("size")),"查询成功");
             }
         }else {
-            rep.setResp(0,collegeService.list(),"查询成功");
+            rep.setResp(-1,null,"空参数");
         }
         return rep;
     }
@@ -93,4 +97,24 @@ public class CollegeController extends BaseController implements GetController {
     }
 
 
+    @PutMapping("/college")
+    @Override
+    public RespBody doPut(Map<Object, String> map, HttpServletRequest request) {
+        if(!map.isEmpty()){
+            try {
+                this.college= JSON.parseObject(JSON.toJSONString(map),college.getClass());
+                if(this.collegeService.collegeInfoById(this.college.getCollegeId())!=null){
+                    this.collegeService.updateById(this.college);
+                    rep.setResp(0,null,"修改成功");
+                }else {
+                    rep.setResp(-1,null,"不存在的学院");
+                }
+            }catch (Exception e){
+                rep.setResp(-1,null,"非法参数");
+            }
+        }else {
+            rep.setResp(-1,null,"空参数");
+        }
+        return rep;
+    }
 }

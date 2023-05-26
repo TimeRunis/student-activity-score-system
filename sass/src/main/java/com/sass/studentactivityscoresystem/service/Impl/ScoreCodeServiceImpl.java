@@ -1,6 +1,5 @@
 package com.sass.studentactivityscoresystem.service.Impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sass.studentactivityscoresystem.entity.ScoreCode;
@@ -33,6 +32,13 @@ public class ScoreCodeServiceImpl extends ServiceImpl<ScoreCodeMapper, ScoreCode
     }
 
     @Override
+    public Page<ScoreCode> getOneByPage(String code) {
+        //分页参数
+        Page<ScoreCode> page = new Page<>(1, 10);
+        return this.getBaseMapper().getOneByPage(page,code);
+    }
+
+    @Override
     public Boolean removeCode(String code){
         try{
             //查询是否存在
@@ -52,8 +58,6 @@ public class ScoreCodeServiceImpl extends ServiceImpl<ScoreCodeMapper, ScoreCode
     public Page<ScoreCode> findAll(String current, String size) {
         //分页参数
         Page<ScoreCode> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
-        //queryWrapper组装查询where条件
-        LambdaQueryWrapper<ScoreCode> queryWrapper = new LambdaQueryWrapper<>();
-        return this.getBaseMapper().selectPage(page,queryWrapper);
+        return this.getBaseMapper().getAllByPage(page);
     }
 }

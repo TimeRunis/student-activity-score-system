@@ -7,6 +7,8 @@ import com.sass.studentactivityscoresystem.entity.ScoreCode;
 public interface ScoreCodeService extends IService<ScoreCode> {
     String generateCode();
 
+    Page<ScoreCode> getOneByPage(String code);
+
     Boolean removeCode(String code);
 
     Page<ScoreCode> findAll(String current, String size);

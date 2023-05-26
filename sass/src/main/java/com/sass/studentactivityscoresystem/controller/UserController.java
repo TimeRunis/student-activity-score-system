@@ -65,15 +65,13 @@ public class UserController extends BaseController implements GetController, Put
                     }
                 }
                 else if (map.get("id")!=null){
-                    rep.setResp(0,userService.userInfoByIdPage(Integer.parseInt(map.get("id")),map.get("current"),map.get("size")),"查询成功");
+                    rep.setResp(0,userService.userInfoByIdPage(Integer.parseInt(map.get("id")),map.get("current"),map.get("size")).getData(),"查询成功");
                 }else if(map.containsKey("current")&&map.containsKey("size")){
                     rep.setResp(0,userService.findAll(map.get("current"),map.get("size")).getData(),"查询成功");
                 }
             }else {
                 rep.setResp(1,null,"权限不足");
             }
-
-
         }else {
             rep.setResp(-1,null,"空参数");
         }

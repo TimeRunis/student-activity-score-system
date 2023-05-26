@@ -1,9 +1,9 @@
 package com.sass.studentactivityscoresystem.service.Impl;
 
+import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sass.studentactivityscoresystem.entity.Goods;
-import com.sass.studentactivityscoresystem.entity.GoodsOrder;
-import com.sass.studentactivityscoresystem.entity.User;
+import com.sass.studentactivityscoresystem.entity.*;
 import com.sass.studentactivityscoresystem.mapper.GoodsOrderMapper;
 import com.sass.studentactivityscoresystem.service.GoodsOrderService;
 import com.sass.studentactivityscoresystem.service.GoodsService;
@@ -20,25 +20,31 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderMapper, GoodsOr
     private GoodsService goodsService;
     private UserScoreService userScoreService;
     private UserService userService;
+    private TransportInfo[] transportInfo;
 
-    public GoodsOrderServiceImpl(User user, GoodsOrder goodsOrder, GoodsService goodsService, UserScoreService userScoreService, UserService userService) {
+
+    public GoodsOrderServiceImpl(User user, GoodsOrder goodsOrder, GoodsService goodsService, UserScoreService userScoreService, UserService userService,TransportInfo[] transportInfo) {
         this.user = user;
         this.goodsOrder = goodsOrder;
         this.goodsService = goodsService;
         this.userScoreService = userScoreService;
         this.userService = userService;
+        this.transportInfo = transportInfo;
     }
 
     @Override
     public synchronized boolean createOrder(Goods goods, int userId){
         this.user= (User) userService.userInfoById(userId);
         if(goods.getGoodsPrice()<=user.getActivityScore()){
+            //设置物流信息
+            transportInfo[0].setInfo("用户下单");
+            transportInfo[0].setUpdateTime(new Date());
             //创建订单
             this.goodsOrder.setGoodsId(goods.getGoodsId());
             this.goodsOrder.setBuyTime(new Date());
             this.goodsOrder.setEndTime(null);
             this.goodsOrder.setGoId(0);
-            this.goodsOrder.setTransportInfo(null);
+            this.goodsOrder.setTransportInfo(JSON.toJSONString(transportInfo));
             this.goodsOrder.setUserId(userId);
             this.getBaseMapper().insert(goodsOrder);
             //库存结算
@@ -51,4 +57,48 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderMapper, GoodsOr
             return false;
         }
     }
+
+    @Override
+    public Page<GoodsOrder> findAll(String current, String size) {
+        //分页参数
+        Page<GoodsOrder> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
+        return this.getBaseMapper().getAllByPage(page);
+    }
+
+    @Override
+    public Page<GoodsOrder> findFinished(String current, String size) {
+        //分页参数
+        Page<GoodsOrder> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
+        return this.getBaseMapper().getFinishedByPage(page);
+    }
+
+    @Override
+    public Page<GoodsOrder> findUnfinished(String current, String size) {
+        //分页参数
+        Page<GoodsOrder> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
+        return this.getBaseMapper().getUnfinishedByPage(page);
+    }
+
+    @Override
+    public Page<GoodsOrder> findOneByUser(String userId,String current, String size) {
+        //分页参数
+        Page<GoodsOrder> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
+        return this.getBaseMapper().getByUserId(page,userId);
+    }
+
+    @Override
+    public Page<GoodsOrder> findOneByGoods(String goodsId,String current, String size) {
+        //分页参数
+        Page<GoodsOrder> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
+        return this.getBaseMapper().getByGoodsId(page,goodsId);
+    }
+
+    @Override
+    public Page<GoodsOrder> findOneByGoid(String goId, String current, String size) {
+        //分页参数
+        Page<GoodsOrder> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
+        return this.getBaseMapper().getByGoId(page,goId);
+    }
+
+
 }

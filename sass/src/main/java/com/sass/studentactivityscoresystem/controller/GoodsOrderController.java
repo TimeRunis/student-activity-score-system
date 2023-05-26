@@ -15,11 +15,11 @@ import com.sass.studentactivityscoresystem.service.UserService;
 import com.sass.studentactivityscoresystem.utils.JwtUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -41,8 +41,50 @@ public class GoodsOrderController extends BaseController implements PostControll
         return rep;
     }
 
+    @GetMapping("/goodsOrder")
     @Override
     public RespBody doGet(Map<Object, String> map, HttpServletRequest request) {
+        if(!map.isEmpty()){
+            if(map.containsKey("current")&&map.containsKey("size")){
+                //管理员
+                if(JwtUtils.checkPermission(request.getHeader("token"),9)) {
+                    if (map.containsKey("userId")) {
+                        rep.setResp(0, goodsOrderService.findOneByUser(map.get("userId"), map.get("current"), map.get("size")), null);
+                    } else if (map.containsKey("goodsId")) {
+                        rep.setResp(0, goodsOrderService.findOneByGoods(map.get("goodsId"), map.get("current"), map.get("size")), null);
+                    } else if(map.containsKey("goId")){
+                        rep.setResp(0, goodsOrderService.findOneByGoid(map.get("goId"), map.get("current"), map.get("size")), null);
+                    }else{
+                        if(map.containsKey("filter")){
+                            switch (map.get("filter")){
+                                case "0":
+                                    //查询所有
+                                    rep.setResp(0,goodsOrderService.findAll(map.get("current"),map.get("size")),null);
+                                    break;
+                                case "1":
+                                    //已完成的筛选
+                                    rep.setResp(0,goodsOrderService.findFinished(map.get("current"),map.get("size")),null);
+                                    break;
+                                case "2":
+                                    //未完成的筛选
+                                    rep.setResp(0,goodsOrderService.findUnfinished(map.get("current"),map.get("size")),null);
+                                    break;                             }
+                        }else {
+                            //查询所有
+                            rep.setResp(0,goodsOrderService.findAll(map.get("current"),map.get("size")),null);
+                        }
+                    }
+                }else {
+                    //用户
+                    rep.setResp(0,goodsOrderService.findOneByUser(String.valueOf(JwtUtils.getUserId(request.getHeader("token"))),map.get("current"),map.get("size")),null);
+                }
+            }else {
+                rep.setResp(-1,null,"非法参数");
+            }
+
+        }else {
+            rep.setResp(-1,null,"空参数");
+        }
         return rep;
     }
 

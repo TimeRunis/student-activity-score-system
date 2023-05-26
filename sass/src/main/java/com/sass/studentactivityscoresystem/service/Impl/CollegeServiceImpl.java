@@ -3,7 +3,6 @@ package com.sass.studentactivityscoresystem.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sass.studentactivityscoresystem.entity.ActivitySubmit;
 import com.sass.studentactivityscoresystem.entity.College;
 import com.sass.studentactivityscoresystem.entity.ReturnBody;
 import com.sass.studentactivityscoresystem.mapper.CollegeMapper;
@@ -32,13 +31,13 @@ public class CollegeServiceImpl extends ServiceImpl<CollegeMapper,College> imple
     }
 
     @Override
-    public Page findByName(String name, int current, int size) {
+    public Page<College> findByName(String name, String current, String size) {
         ReturnBody returnBody =new ReturnBody();
         //分页参数
-        Page<College> page = new Page<>(current, size);
+        Page<College> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
         //queryWrapper组装查询where条件
         LambdaQueryWrapper<College> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(College::getCollegeName,name);
+        queryWrapper.like(College::getCollegeName,name);
         return this.getBaseMapper().selectPage(page,queryWrapper);
     }
 
@@ -96,5 +95,15 @@ public class CollegeServiceImpl extends ServiceImpl<CollegeMapper,College> imple
             //参数为空
             return -1;
         }
+    }
+
+    @Override
+    public Page<College> findAllCollege(String current, String size) {
+        //分页参数
+        Page<College> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
+        //queryWrapper组装查询where条件
+        LambdaQueryWrapper<College> queryWrapper = new LambdaQueryWrapper<>();
+        this.getBaseMapper().selectPage(page,queryWrapper);
+        return page;
     }
 }

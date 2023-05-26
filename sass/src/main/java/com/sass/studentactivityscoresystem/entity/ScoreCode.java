@@ -1,5 +1,6 @@
 package com.sass.studentactivityscoresystem.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +12,31 @@ public class ScoreCode implements Cloneable{
     String code;
     Integer number;
     Integer userId;
+    @TableField(exist = false)
+    User user;
     Integer creatorId;
+    @TableField(exist = false)
+    User creator;
     Date createTime;
     Date deadLine;
     Date useTime;
     Boolean isUsed;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
 
     public String getCode() {
         return code;

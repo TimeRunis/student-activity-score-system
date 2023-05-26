@@ -41,40 +41,29 @@ public class ScoreCodeController extends BaseController implements GetController
     @Override
     public RespBody doGet(Map<Object, String> map, HttpServletRequest request) {
         if(!map.isEmpty()){
-            //单个查询
-            try {
-                String code = map.get("code");
-                if(JwtUtils.checkPermission(request.getHeader("token"),9)){
-                    //尝试获取分页参数来全部查询(管理员)
-                    try{
-                        String current = map.get("current");
-                        String size = map.get("size");
-                        rep.setResp(0,scoreCodeService.findAll(current,size),"查询成功");
-                    }catch (Exception e){
-                        //获取失败则进行单个查询
-                        scoreCode=scoreCodeService.getById(code);
-                        if (scoreCode!=null){
-                            rep.setResp(0,scoreCode,"查询成功");
-                        }else {
-                            rep.setResp(-1,null,"这不是一个有效的兑换码");
-                        }
-                    }
-
-                }else {
+            if(JwtUtils.checkPermission(request.getHeader("token"),9)){
+                //尝试获取分页参数来全部查询(管理员)
+                if(map.containsKey("current")&&map.containsKey("size")){
+                    rep.setResp(0,scoreCodeService.findAll(map.get("current"),map.get("size")),"查询成功");
+                }else if(map.containsKey("code")){
+                    //获取失败则进行单个查询
+                    rep.setResp(0,scoreCodeService.getOneByPage(map.get("code")),"查询成功");
+                }
+            }else {
+                if(map.containsKey("code")){
                     //非管理员用户查询
-                    scoreCode=scoreCodeService.getById(code);
+                    scoreCode=scoreCodeService.getById(map.get("code"));
                     if (scoreCode!=null){
                         map.put("number",scoreCode.getNumber().toString());
-                        map.put("deadLine", TimeTransformer.date2Format(scoreCode.getDeadLine()));
+                        map.put("deadLine", scoreCode.getDeadLine().toString());
                         map.put("isUsed",scoreCode.getUsed().toString());
                         rep.setResp(0,map,"查询成功");
                     }else {
                         rep.setResp(-1,null,"这不是一个有效的兑换码");
                     }
                 }
-            }catch (Exception e){
-                rep.setResp(-1,null,"无效参数");
             }
+
         }else {
             rep.setResp(-1,null,"空参数");
         }
@@ -119,7 +108,6 @@ public class ScoreCodeController extends BaseController implements GetController
                             scoreCode.setUsed(false);
                             scoreCodeService.getBaseMapper().insert(scoreCode);
                             list.add(scoreCode.clone());
-                            System.out.println("数据:"+Arrays.toString(list.toArray()));
                         }
                         rep.setResp(0,list,"生成成功");
                     }
