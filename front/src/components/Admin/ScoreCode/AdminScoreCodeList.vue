@@ -93,20 +93,21 @@ export default {
     deleteCode(index){
       Dialog.confirm({
         title: '确认',
-        message: '确定要删除这个学院吗',
+        message: '确定要删除这个积分码吗',
       })
           .then(() => {
-            apiDelete('scoreCode',{id:this.list[index]['code']}).then((resp)=>{
+            apiDelete('scoreCode',{code:this.list[index]['code']}).then((resp)=>{
               if(resp.data['code']===0){
                 Notify({type:"success",message:resp.data['message']});
                 this.$delete(this.list,index);
+              }else {
+                Notify({type:"danger",message:resp.data['message']});
               }
             })
           })
 
     },
     editCollege(index){
-      // console.info(this.list[index])
       this.$parent.showEditCollege(this.list[index]);
     },
     codeInfo(index){

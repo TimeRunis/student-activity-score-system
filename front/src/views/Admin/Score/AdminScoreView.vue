@@ -64,7 +64,8 @@ export default {
       param:{
         id:"",
         current:1,
-        size:10
+        size:10,
+        admin:true,
       },
       scoreParam:{
         userId:"",
@@ -108,7 +109,7 @@ export default {
     search(){
       apiGet('user',this.param).then((resp)=>{
         if(resp.data['code']===0&&resp.data['data']['total']!==0){
-          this.userinfo=resp.data['data'];
+          this.userinfo=resp.data['data']['records'][0];
           Notify({type:"success",message:resp.data['message']});
           this.beSearch=true;
         }else if(resp.data['data']['total']===0){

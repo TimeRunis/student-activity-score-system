@@ -7,36 +7,38 @@
         @load="onLoad"
         style="display: flex;flex-wrap: wrap;justify-content: center"
     >
-      <div class="ac_box" v-for="(item,i) in list" :key="i" @click="toDetail(item['activityId'])">
+      <div class="cart_box" v-for="(item,i) in list" :key="i" @click="showOrderDetail(item)">
         <van-row type="flex" justify="center">
           <van-col span="8">
             <van-image
                 width="100%"
                 height="100%"
                 fit="contain"
-                :src="item['headImg']"
+                :src="item['goods']['headImg']"
             />
           </van-col>
           <van-col span="16">
-            <van-cell title-style="font-size:15px;font-weight:bold;" style="border-radius: 1em" :title="item['activityName']" />
-            <van-cell style="border-radius: 1em" >
-              开始时间:{{item['startTime']}}
-            </van-cell><van-cell style="border-radius: 1em" >
-              截止时间:{{item['deadLine']}}
-            </van-cell>
-
+            <van-cell title-style="font-size:15px;font-weight:bold;" style="border-radius: 1em" title="订单编号" :value="item['goId']"/>
+            <van-cell title-style="font-size:15px;font-weight:bold;" style="border-radius: 1em" title="商品名" :value="item['goods']['goodsName']" />
+            <van-cell title-style="font-size:15px;font-weight:bold;" style="border-radius: 1em" title="价值" :value="item['goods']['goodsPrice']" />
+            <van-cell title-style="font-size:15px;font-weight:bold;" style="border-radius: 1em" title="是否收货" :value="item['endTime']?'是':'否'" />
           </van-col>
         </van-row>
       </div>
     </van-list>
-
+    <van-popup v-model="isPop" closeable position="bottom" :style="{ height:'100%' }">
+      <goods-order-detail style="margin-top: 60px" ref="goodsOrder"></goods-order-detail>
+    </van-popup>
   </van-pull-refresh>
 </template>
 
 <script>
-import {apiGet} from "@/util/Api.js";
+import {apiGet} from "@/util/Api";
+import GoodsOrderDetail from "@/components/GoodsOrder/GoodsOrderDetail";
+
 export default {
-  name: "ActivityList",
+  name: "GoodsOrderList",
+  components: {GoodsOrderDetail},
   props:['isStart'],
   data() {
     return {
@@ -45,6 +47,7 @@ export default {
         current:1,
         size:10
       },
+      isPop:false,
       list: [],
       listMaxSize:1,
       loading: false,
@@ -54,7 +57,7 @@ export default {
   },
   beforeMount() {
     if(this.isStart===true){
-      apiGet("activity",this.getData).then((resp)=>{
+      apiGet("goodsOrder",this.getData).then((resp)=>{
         this.list=resp.data['data']['records']
         this.listMaxSize=resp.data['data']['total']
         this.getData["current"]+=1
@@ -77,7 +80,7 @@ export default {
           this.finished = true;
         }else {
           //获取数据
-          apiGet("activity",this.getData).then((resp)=>{
+          apiGet("goodsOrder",this.getData).then((resp)=>{
             for(let i in resp.data['data']['records']){
               this.list.push(resp.data['data']['records'][i]);
             }
@@ -100,16 +103,18 @@ export default {
       this.loading = true;
       this.onLoad();
     },
-    toDetail(id){
-      this.$router.push('/activity/detail?id='+id)
+    showOrderDetail(order){
+      this.isPop=true;
+      this.$nextTick(()=>{
+        this.$refs.goodsOrder.loadOrder(order);
+      })
     },
-
   },
 }
 </script>
 
 <style scoped>
-.ac_box{
+.cart_box{
   border-radius: 0.5em;
   box-shadow: 0 0 10px 0 #e6e6e6;
   border-style: solid;

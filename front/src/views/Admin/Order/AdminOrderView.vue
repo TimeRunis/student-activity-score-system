@@ -50,16 +50,11 @@
         </van-popover>
       </div>
     </div>
-    <van-popup v-model="showPop" position="bottom" style="height: 25%" @close="closePop">
-
-    </van-popup>
     <admin-order-list ref="goodsList"></admin-order-list>
   </div>
 </template>
 
 <script>
-import {apiPost, apiPut} from "@/util/Api";
-import {Notify} from "vant";
 import AdminOrderList from "@/components/Admin/Order/AdminOrderList";
 export default {
   name: "AdminOrderView",
@@ -67,7 +62,6 @@ export default {
   data(){
     return{
       college:{},
-      showPop:false,
       isShowAdd:false,
       isShowEdit:false,
       showSearch:false,
@@ -89,42 +83,8 @@ export default {
     }
   },
   methods:{
-    closePop(){
-      setTimeout(()=>{
-        this.showPop=false;
-        this.isShowEdit=false;
-        this.isShowAdd=false;
-      },200);
-    },
-    setCollege(college){
-      this.college=college;
-    },
-    confirmEdit() {
-      apiPut("goodsOrder",this.college).then((resp)=>{
-        if(resp.data['code']===0){
-          Notify({type:"success",message:resp.data['message']});
-          setTimeout(()=>{location.reload()},500);
-        }else {
-          Notify({type:"danger",message:resp.data['message']});
-        }
-      })
-    },
-    confirmAdd() {
-      apiPost("goodsOrder",this.college).then((resp)=>{
-        if(resp.data['code']===0){
-          Notify({type:"success",message:resp.data['message']});
-          setTimeout(()=>{location.reload()},500);
-        }else {
-          Notify({type:"danger",message:resp.data['message']});
-        }
-      })
-    },
     showEdit(){
       this.isShowEdit=true;
-      this.showPop=true;
-    },
-    showAdd(){
-      this.isShowAdd=true;
       this.showPop=true;
     },
     search(){

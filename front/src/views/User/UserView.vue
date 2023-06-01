@@ -23,7 +23,7 @@
       </div>
       <van-popup v-model="isPop" closeable @close="closePop" position="bottom" :style="{ height:'100%' }">
         <UserInfo v-if="showUserInfo" style="margin-top: 60px"></UserInfo>
-        <div v-if="showOrder">123</div>
+        <goods-order-list v-if="showOrder" :is-start="true" style="margin-top: 60px"></goods-order-list>
         <user-activity-submit v-if="showActivity" :is-start="true" style="margin-top: 60px"></user-activity-submit>
         <code-info v-if="showCode" style="margin-top: 60px"></code-info>
       </van-popup>
@@ -39,10 +39,11 @@ import Register from "@/components/User/Register";
 import UserActivitySubmit from "@/components/User/UserActivitySubmit";
 import BottomMenu from "@/components/BottomMenu";
 import CodeInfo from "@/components/ScoreCode/CodeInfo";
+import GoodsOrderList from "@/components/GoodsOrder/GoodsOrderList";
 
 export default {
   name: "UserView",
-  components: {CodeInfo, BottomMenu, UserActivitySubmit, Register, UserInfo, Login},
+  components: {GoodsOrderList, CodeInfo, BottomMenu, UserActivitySubmit, Register, UserInfo, Login},
   beforeMount() {
     this.isLogin = this.$cookies.isKey("token");
     this.isAdmin = localStorage.getItem("authorityLevel")>=9;

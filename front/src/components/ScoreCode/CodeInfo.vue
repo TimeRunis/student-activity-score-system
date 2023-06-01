@@ -7,8 +7,8 @@
       <van-cell title="积分码" :value="codeInfo.code"></van-cell>
       <van-cell title="可获得积分" :value="codeInfo.number"></van-cell>
       <van-cell title="截止时间" :value="codeInfo.deadLine"></van-cell>
-      <van-cell title="是否使用" :value="codeInfo.used?'是':'否'"></van-cell>
-      <van-button type="primary" round style="width: 100%;border-radius: 0.5em" :disabled="codeInfo.used" @click="submitCode">兑换</van-button>
+      <van-cell title="是否使用" :value="codeInfo.isUsed===true?'是':'否'"></van-cell>
+      <van-button type="primary" round style="width: 100%;border-radius: 0.5em" :disabled="codeInfo.isUsed!=='false'" @click="submitCode">兑换</van-button>
     </div>
   </div>
 </template>
@@ -27,6 +27,7 @@ export default {
           this.codeInfo=resp.data['data'];
           this.codeInfo.deadLine=dateFormat(new Date(this.codeInfo.deadLine));
           Notify({type:"success",message:resp.data["message"]})
+          console.info(this.codeInfo)
         }else {
           this.codeInfo.code=resp.data["message"];
           this.codeInfo.number=resp.data["message"];
@@ -56,7 +57,7 @@ export default {
         code: "请查询积分码",
         number: "请查询积分码",
         deadLine: "请查询积分码",
-        used: true,
+        isUsed: true,
       },
     }
   }

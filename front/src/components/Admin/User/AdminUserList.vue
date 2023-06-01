@@ -42,7 +42,8 @@ export default {
     return {
       getData:{
         current:1,
-        size:10
+        size:10,
+        admin:true,
       },
       list: [],
       listMaxSize:1,

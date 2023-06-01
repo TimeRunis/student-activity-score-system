@@ -15,6 +15,8 @@ import AdminShopEditorView from "@/views/Admin/Shop/AdminShopEditorView";
 import AdminScoreView from "@/views/Admin/Score/AdminScoreView";
 import AdminScoreCodeView from "@/views/Admin/ScoreCode/AdminScoreCodeView";
 import AdminOrderView from "@/views/Admin/Order/AdminOrderView";
+import AdminOrderEditView from "@/views/Admin/Order/AdminOrderEditView";
+import AdminActivitySubmitView from "@/views/Admin/Activity/AdminActivitySubmitView";
 
 Vue.use(VueRouter)
 
@@ -100,6 +102,16 @@ const routes = [
     path:"/admin/order",
     name:"adminOrderCode",
     component:AdminOrderView
+  },
+  {
+    path:"/admin/order/edit",
+    name:"adminOrderEdit",
+    component:AdminOrderEditView
+  },
+  {
+    path:"/admin/activity/submitList",
+    name:"adminActivitySubmitList",
+    component:AdminActivitySubmitView
   }
 ]
 

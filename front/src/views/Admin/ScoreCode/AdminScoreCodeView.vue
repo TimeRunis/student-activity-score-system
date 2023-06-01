@@ -8,7 +8,7 @@
     <div style="display: flex;justify-content: center">
       <div class="cart_box">
         <van-grid column-num="2">
-          <van-grid-item icon="add-o" @click="showAdd" />
+          <van-grid-item icon="add-o" @click="isShowAdd=true" />
           <van-grid-item icon="search" @click="showSearch=true" />
           <van-popover
               v-model="showSearch"
@@ -32,6 +32,9 @@
     <van-popup v-model="showPop" position="bottom" style="height: 70%" @close="closePop">
       <admin-code-info style="margin: 20px" ref="info"></admin-code-info>
     </van-popup>
+    <van-popup v-model="isShowAdd" position="bottom" style="height: 40%" @close="closePop">
+      <admin-score-code-generator></admin-score-code-generator>
+    </van-popup>
     <admin-score-code-list ref="list"></admin-score-code-list>
   </div>
 </template>
@@ -41,9 +44,10 @@ import {apiGet, apiPost, apiPut} from "@/util/Api";
 import {Notify} from "vant";
 import AdminScoreCodeList from "@/components/Admin/ScoreCode/AdminScoreCodeList";
 import AdminCodeInfo from "@/components/Admin/ScoreCode/AdminCodeInfo";
+import AdminScoreCodeGenerator from "@/components/Admin/ScoreCode/AdminScoreCodeGenerator";
 export default {
   name: "AdminScoreCodeView",
-  components: {AdminCodeInfo, AdminScoreCodeList},
+  components: {AdminScoreCodeGenerator, AdminCodeInfo, AdminScoreCodeList},
   data(){
     return{
       college:{},
@@ -62,27 +66,12 @@ export default {
         this.isShowAdd=false;
       },200);
     },
-    confirmAdd() {
-      apiPost("college",this.college).then((resp)=>{
-        if(resp.data['code']===0){
-          Notify({type:"success",message:resp.data['message']});
-          setTimeout(()=>{location.reload()},500);
-        }else {
-          Notify({type:"danger",message:resp.data['message']});
-        }
-      })
-    },
     showInfo(info){
       this.isShowInfo=true;
       this.showPop=true;
       this.$nextTick(() => {
         this.$refs.info.setData(info);
       })
-
-    },
-    showAdd(){
-      this.isShowAdd=true;
-      this.showPop=true;
     },
     search(){
       this.$refs.list.search(this.searchKey,this.searchOption)

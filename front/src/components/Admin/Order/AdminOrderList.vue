@@ -38,7 +38,8 @@ export default {
     return {
       getData:{
         current:1,
-        size:10
+        size:10,
+        admin:true
       },
       list: [],
       listMaxSize:1,
@@ -96,7 +97,7 @@ export default {
         message: '确定要删除这个订单吗',
       })
           .then(() => {
-            apiDelete('goodsOrder',{id:this.list[index]['OrderId']}).then((resp)=>{
+            apiDelete('goodsOrder',{id:this.list[index]['goId']}).then((resp)=>{
               if(resp.data['code']===0){
                 Notify({type:"success",message:resp.data['message']});
                 this.$delete(this.list,index);
@@ -105,6 +106,9 @@ export default {
           })
 
     },
+    editOrder(index){
+      this.$router.push("/admin/order/edit?id="+this.list[index]['goId']);
+    },
     search(value,type){
       switch (type){
         case 0:
@@ -112,7 +116,8 @@ export default {
           this.getData={
             goId:value,
             current:1,
-            size:10
+            size:10,
+            admin:1
           };
           this.onRefresh();
           break;
@@ -121,7 +126,8 @@ export default {
           this.getData={
             userId:value,
             current:1,
-            size:10
+            size:10,
+            admin:1
           };
           this.onRefresh();
           break;
@@ -130,7 +136,8 @@ export default {
           this.getData={
             goodsId:value,
             current:1,
-            size:10
+            size:10,
+            admin:1
           };
           this.onRefresh();
           break;
@@ -139,7 +146,8 @@ export default {
           this.getData={
             filter:value,
             current:1,
-            size:10
+            size:10,
+            admin:1
           };
           this.onRefresh();
           break;
@@ -147,7 +155,8 @@ export default {
           //全部查询
           this.getData={
             current:1,
-            size:10
+            size:10,
+            admin:1
           };
           this.onRefresh();
           break;

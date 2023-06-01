@@ -11,6 +11,9 @@
           <van-cell>
             截止时间:{{detail['deadLine']}}
           </van-cell>
+          <van-cell>
+            参与人数: {{userNumber}} 人
+          </van-cell>
         </div>
       </van-cell>
       <van-button :disabled="isDeadLine" style="width: 100%" type="primary" @click="acSubmit">参加</van-button>
@@ -45,6 +48,14 @@ export default {
           Notify({type:"warning",message:"活动已经结束了"})
         }
       })
+      apiGet("activitySubmit",{acId:this.acId,current:1,size:10}).then((resp)=>{
+        if (resp.data['code']===0){
+          this.userNumber=resp.data['data']['submitNumber'];
+        }else {
+          this.userNumber="获取失败";
+          Notify({type:"danger",message:resp.data['message']});
+        }
+      })
     }
   },
   methods:{
@@ -58,10 +69,11 @@ export default {
        }
       })
     },
-    setDetail(detail){
+    setDetail(detail,submitNumber){
       this.detail=detail;
       //获取截止时间
       this.deadLine=new Date(string2Date(this.detail['deadLine']));
+      this.userNumber=submitNumber;
     },
     setContent(content){
       this.detail['activityContent']=content;
@@ -78,6 +90,7 @@ export default {
       submitParam:{
         acId:0,
       },
+      userNumber:0,
       isDeadLine:true,
       deadLine:'',
       detail:{},

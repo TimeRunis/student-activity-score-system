@@ -42,7 +42,11 @@
              @cancel="showDate = false"
          />
        </van-popup>
+       <van-cell is-link title="查看参加者" @click="$router.push('/admin/activity/submitList?id='+$route.query.id)"></van-cell>
      </div>
+      <div>
+
+      </div>
     </div>
     <div style="display: flex;justify-content: center;flex-wrap:wrap">
       <div class="cart_box" >
@@ -71,10 +75,11 @@ export default {
   mounted() {
     if(!this.$route.query.isCreate){
       this.submitParam.id=this.$route.query.id;
+      this.getSubmit(this.$route.query.id);
       apiGet("activity",this.submitParam).then((resp)=>{
         this.activity=resp.data['data'];
         this.headFile.push({url:resp.data['data']['headImg']});
-        this.$refs.acDetail.setDetail(resp.data['data']);
+        this.$refs.acDetail.setDetail(resp.data['data'],this.userNumber);
         this.$refs.editor.setContent(resp.data['data']['activityContent']);
       })
     }else {
@@ -94,6 +99,7 @@ export default {
       headFile:[],
       showDate:false,
       editDateOption:0,
+      userNumber:0,
       activity:{
         activityContent: "",
         activityName: "",
@@ -113,11 +119,10 @@ export default {
         this.headFile.pop();
         this.headFile.push({url:this.activity.headImg});
       }
-      console.info(this.headFile)
     },
     previewContent(){
       this.$refs.acDetail.setContent(this.$refs.editor.html);
-      this.$refs.acDetail.setDetail(this.activity);
+      this.$refs.acDetail.setDetail(this.activity,this.userNumber);
     },
     saveContent(){
       if(!this.$route.query.isCreate){
@@ -162,6 +167,16 @@ export default {
         }
       })
     },
+    getSubmit(acId){
+      apiGet("activitySubmit",{acId:acId,current:1,size:10}).then((resp)=>{
+        if (resp.data['code']===0){
+          this.userNumber=resp.data['data']['total'];
+        }else {
+          this.userNumber="获取失败";
+          Notify({type:"danger",message:resp.data['message']});
+        }
+      })
+    }
   }
 }
 </script>
