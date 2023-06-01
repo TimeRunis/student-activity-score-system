@@ -12,7 +12,9 @@ public interface ActivitySubmitMapper extends com.baomidou.mybatisplus.core.mapp
     @Results(
             {
                     @Result(column = "as_id",property = "asId"),
-                    @Result(column = "user_id",property = "userId"),
+                    @Result(column = "user_id",property = "user",javaType = Activity.class,
+                            one=@One(select = "com.sass.studentactivityscoresystem.mapper.UserMapper.selectById")
+                    ),
                     @Result(column = "user_name",property = "userName"),
                     @Result(column = "activity_id",property = "activityId"),
                     @Result(column = "activity_id",property = "activity",javaType = Activity.class,
@@ -28,7 +30,9 @@ public interface ActivitySubmitMapper extends com.baomidou.mybatisplus.core.mapp
             {
                     @Result(column = "as_id",property = "asId"),
                     @Result(column = "user_id",property = "userId"),
-                    @Result(column = "user_name",property = "userName"),
+                    @Result(column = "user_id",property = "user",javaType = Activity.class,
+                            one=@One(select = "com.sass.studentactivityscoresystem.mapper.UserMapper.selectById")
+                    ),
                     @Result(column = "activity_id",property = "activityId"),
                     @Result(column = "activity_id",property = "activity",javaType = Activity.class,
                             one=@One(select = "com.sass.studentactivityscoresystem.mapper.ActivityMapper.selectById")
@@ -43,7 +47,9 @@ public interface ActivitySubmitMapper extends com.baomidou.mybatisplus.core.mapp
             {
                     @Result(column = "as_id",property = "asId"),
                     @Result(column = "user_id",property = "userId"),
-                    @Result(column = "user_name",property = "userName"),
+                    @Result(column = "user_id",property = "user",javaType = Activity.class,
+                            one=@One(select = "com.sass.studentactivityscoresystem.mapper.UserMapper.selectById")
+                    ),
                     @Result(column = "activity_id",property = "activityId"),
                     @Result(column = "activity_id",property = "activity",javaType = Activity.class,
                             one=@One(select = "com.sass.studentactivityscoresystem.mapper.ActivityMapper.selectById")

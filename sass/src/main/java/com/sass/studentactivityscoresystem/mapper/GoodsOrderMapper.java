@@ -1,14 +1,14 @@
 package com.sass.studentactivityscoresystem.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sass.studentactivityscoresystem.entity.Goods;
 import com.sass.studentactivityscoresystem.entity.GoodsOrder;
 import com.sass.studentactivityscoresystem.entity.User;
-import org.apache.ibatis.annotations.One;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+
+import java.util.Date;
 
 public interface GoodsOrderMapper extends BaseMapper<GoodsOrder> {
     @Select("select * from goods_order")
@@ -23,7 +23,7 @@ public interface GoodsOrderMapper extends BaseMapper<GoodsOrder> {
                     @Result(column = "user_id",property = "user",javaType = User.class,
                             one=@One(select = "com.sass.studentactivityscoresystem.mapper.UserMapper.selectById")
                     ),
-                    @Result(column = "transport_info",property = "transportInfo"),
+                    @Result(column = "transport_info",property = "transportInfo",typeHandler = FastjsonTypeHandler.class),
 
                     @Result(column = "buy_time",property = "buyTime"),
                     @Result(column = "end_time",property = "endTime"),
@@ -43,7 +43,7 @@ public interface GoodsOrderMapper extends BaseMapper<GoodsOrder> {
                     @Result(column = "user_id",property = "user",javaType = User.class,
                             one=@One(select = "com.sass.studentactivityscoresystem.mapper.UserMapper.selectById")
                     ),
-                    @Result(column = "transport_info",property = "transportInfo"),
+                    @Result(column = "transport_info",property = "transportInfo",typeHandler = FastjsonTypeHandler.class),
 
                     @Result(column = "buy_time",property = "buyTime"),
                     @Result(column = "end_time",property = "endTime"),
@@ -63,7 +63,7 @@ public interface GoodsOrderMapper extends BaseMapper<GoodsOrder> {
                     @Result(column = "user_id",property = "user",javaType = User.class,
                             one=@One(select = "com.sass.studentactivityscoresystem.mapper.UserMapper.selectById")
                     ),
-                    @Result(column = "transport_info",property = "transportInfo"),
+                    @Result(column = "transport_info",property = "transportInfo",typeHandler = FastjsonTypeHandler.class),
 
                     @Result(column = "buy_time",property = "buyTime"),
                     @Result(column = "end_time",property = "endTime"),
@@ -83,7 +83,7 @@ public interface GoodsOrderMapper extends BaseMapper<GoodsOrder> {
                     @Result(column = "user_id",property = "user",javaType = User.class,
                             one=@One(select = "com.sass.studentactivityscoresystem.mapper.UserMapper.selectById")
                     ),
-                    @Result(column = "transport_info",property = "transportInfo"),
+                    @Result(column = "transport_info",property = "transportInfo",typeHandler = FastjsonTypeHandler.class),
 
                     @Result(column = "buy_time",property = "buyTime"),
                     @Result(column = "end_time",property = "endTime"),
@@ -103,7 +103,7 @@ public interface GoodsOrderMapper extends BaseMapper<GoodsOrder> {
                     @Result(column = "user_id",property = "user",javaType = User.class,
                             one=@One(select = "com.sass.studentactivityscoresystem.mapper.UserMapper.selectById")
                     ),
-                    @Result(column = "transport_info",property = "transportInfo"),
+                    @Result(column = "transport_info",property = "transportInfo",typeHandler = FastjsonTypeHandler.class),
 
                     @Result(column = "buy_time",property = "buyTime"),
                     @Result(column = "end_time",property = "endTime"),
@@ -123,11 +123,17 @@ public interface GoodsOrderMapper extends BaseMapper<GoodsOrder> {
                     @Result(column = "user_id",property = "user",javaType = User.class,
                             one=@One(select = "com.sass.studentactivityscoresystem.mapper.UserMapper.selectById")
                     ),
-                    @Result(column = "transport_info",property = "transportInfo"),
+                    @Result(column = "transport_info",property = "transportInfo",typeHandler = FastjsonTypeHandler.class),
 
                     @Result(column = "buy_time",property = "buyTime"),
                     @Result(column = "end_time",property = "endTime"),
             }
     )
     Page<GoodsOrder> getByGoId(Page<GoodsOrder> page,String goId);
+
+    @Update("update goods_order set transport_info=#{transportInfo} where go_Id=#{goId}")
+    Boolean updateTransportInfo(String goId,String transportInfo);
+
+    @Update("update goods_order set end_time=#{endTime} where go_Id=#{goId}")
+    Boolean endOrder(String goId,Date endTime);
 }

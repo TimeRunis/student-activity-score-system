@@ -9,7 +9,8 @@ public class ActivitySubmit {
     @TableId(value = "as_id")
     private int asId;
     private int userId;
-    private String userName;
+    @TableField(exist = false)
+    private User user;
     private int activityId;
     @TableField(exist = false)
     private Activity activity;
@@ -23,12 +24,12 @@ public class ActivitySubmit {
         this.activity = activity;
     }
 
-    public String getUserName() {
-        return userName;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getAsId() {

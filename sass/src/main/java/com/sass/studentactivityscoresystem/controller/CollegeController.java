@@ -40,7 +40,7 @@ public class CollegeController extends BaseController implements GetController, 
                 rep.setResp(0,collegeService.findAllCollege(map.get("current"),map.get("size")),"查询成功");
             }
         }else {
-            rep.setResp(-1,null,"空参数");
+            rep.setResp(0,collegeService.list(),"查询成功");
         }
         return rep;
     }

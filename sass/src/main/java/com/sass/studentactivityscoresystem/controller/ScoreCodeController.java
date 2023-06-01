@@ -81,7 +81,7 @@ public class ScoreCodeController extends BaseController implements GetController
                     //检查参数
                     int number = Integer.parseInt(map.get("number"));
                     int score = Integer.parseInt(map.get("score"));
-                    String deadLine = map.get("deadLine");
+                    Date deadLine = TimeTransformer.string2Date(map.get("deadLine"));
                     //单生成
                     if(number==1){
                         scoreCode.setCode(scoreCodeService.generateCode());
@@ -89,7 +89,7 @@ public class ScoreCodeController extends BaseController implements GetController
                         scoreCode.setUserId(null);
                         scoreCode.setCreatorId(JwtUtils.getUserId(request.getHeader("token")));
                         scoreCode.setCreateTime(new Date());
-                        scoreCode.setDeadLine(TimeTransformer.string2Date(deadLine));
+                        scoreCode.setDeadLine(deadLine);
                         scoreCode.setUseTime(null);
                         scoreCode.setUsed(false);
                         scoreCodeService.getBaseMapper().insert(scoreCode);
@@ -103,7 +103,7 @@ public class ScoreCodeController extends BaseController implements GetController
                             scoreCode.setUserId(null);
                             scoreCode.setCreatorId(JwtUtils.getUserId(request.getHeader("token")));
                             scoreCode.setCreateTime(new Date());
-                            scoreCode.setDeadLine(TimeTransformer.string2Date(deadLine));
+                            scoreCode.setDeadLine(deadLine);
                             scoreCode.setUseTime(null);
                             scoreCode.setUsed(false);
                             scoreCodeService.getBaseMapper().insert(scoreCode);

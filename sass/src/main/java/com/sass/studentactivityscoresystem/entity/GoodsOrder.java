@@ -2,11 +2,14 @@ package com.sass.studentactivityscoresystem.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
-
+@TableName(autoResultMap = true)
 @Component
 public class GoodsOrder {
     @TableId("go_id")
@@ -17,7 +20,8 @@ public class GoodsOrder {
     Integer userId;
     @TableField(exist = false)
     User user;
-    String transportInfo;
+    @TableField(typeHandler = FastjsonTypeHandler.class)
+    List<TransportInfo> transportInfo;
     Date buyTime;
     Date endTime;
 
@@ -37,7 +41,7 @@ public class GoodsOrder {
         this.user = user;
     }
 
-    public String getTransportInfo() {
+    public List<TransportInfo> getTransportInfo() {
         return transportInfo;
     }
 
@@ -65,7 +69,7 @@ public class GoodsOrder {
         this.userId = userId;
     }
 
-    public void setTransportInfo(String transportInfo) {
+    public void setTransportInfo(List<TransportInfo> transportInfo) {
         this.transportInfo = transportInfo;
     }
 

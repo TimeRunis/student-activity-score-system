@@ -68,15 +68,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public ReturnBody userInfoByIdPage(int id, String current, String size){
+    public Page<User> userInfoByIdPage(int id, String current, String size){
         //分页参数
         Page<User> page = new Page<>(Integer.parseInt(current), Integer.parseInt(size));
         //queryWrapper组装查询where条件
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.apply("{0}={0}", UUID.randomUUID().toString()).eq(User::getUserId,id);
-        this.getBaseMapper().selectPage(page,queryWrapper);
-        returnBody.setBody(0,page);
-        return returnBody;
+        return this.getBaseMapper().selectPage(page,queryWrapper);
     }
 
     @Override

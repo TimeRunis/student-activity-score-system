@@ -1,6 +1,7 @@
 package com.sass.studentactivityscoresystem.service;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sass.studentactivityscoresystem.entity.ReturnBody;
 import com.sass.studentactivityscoresystem.entity.User;
@@ -15,7 +16,7 @@ public interface UserService extends IService<User> {
     //id查询用户信息
     User userInfoById(int id);
     //id查询用户信息分页
-    ReturnBody userInfoByIdPage(int id, String current, String size);
+    Page<User> userInfoByIdPage(int id, String current, String size);
     //邮箱查询用户信息
     Object userInfoByMail(String mail);
     //更新用户基本信息

@@ -12,6 +12,7 @@ import com.sass.studentactivityscoresystem.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderMapper, GoodsOrder> implements GoodsOrderService {
@@ -20,15 +21,17 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderMapper, GoodsOr
     private GoodsService goodsService;
     private UserScoreService userScoreService;
     private UserService userService;
-    private TransportInfo[] transportInfo;
+    private List<TransportInfo> transportInfoList;
+    private TransportInfo transportInfo;
 
 
-    public GoodsOrderServiceImpl(User user, GoodsOrder goodsOrder, GoodsService goodsService, UserScoreService userScoreService, UserService userService,TransportInfo[] transportInfo) {
+    public GoodsOrderServiceImpl(User user, GoodsOrder goodsOrder, GoodsService goodsService, UserScoreService userScoreService, UserService userService, List<TransportInfo> transportInfoList, TransportInfo transportInfo) {
         this.user = user;
         this.goodsOrder = goodsOrder;
         this.goodsService = goodsService;
         this.userScoreService = userScoreService;
         this.userService = userService;
+        this.transportInfoList = transportInfoList;
         this.transportInfo = transportInfo;
     }
 
@@ -37,14 +40,16 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderMapper, GoodsOr
         this.user= (User) userService.userInfoById(userId);
         if(goods.getGoodsPrice()<=user.getActivityScore()){
             //设置物流信息
-            transportInfo[0].setInfo("用户下单");
-            transportInfo[0].setUpdateTime(new Date());
+            transportInfoList.clear();
+            transportInfo.setInfo("用户下单");
+            transportInfo.setUpdateTime(new Date());
+            transportInfoList.add(transportInfo);
             //创建订单
             this.goodsOrder.setGoodsId(goods.getGoodsId());
             this.goodsOrder.setBuyTime(new Date());
             this.goodsOrder.setEndTime(null);
             this.goodsOrder.setGoId(0);
-            this.goodsOrder.setTransportInfo(JSON.toJSONString(transportInfo));
+            this.goodsOrder.setTransportInfo(transportInfoList);
             this.goodsOrder.setUserId(userId);
             this.getBaseMapper().insert(goodsOrder);
             //库存结算
@@ -100,5 +105,14 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderMapper, GoodsOr
         return this.getBaseMapper().getByGoId(page,goId);
     }
 
+    @Override
+    public Boolean updateOrder(String goId,List<TransportInfo> transportInfoList){
+        return getBaseMapper().updateTransportInfo(goId, JSON.toJSONString(transportInfoList));
+    }
+
+    @Override
+    public Boolean endOrder(String goId,Date endTime){
+        return getBaseMapper().endOrder(goId,endTime);
+    }
 
 }

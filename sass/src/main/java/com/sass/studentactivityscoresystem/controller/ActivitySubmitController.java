@@ -45,7 +45,7 @@ public class ActivitySubmitController extends BaseController implements GetContr
         //空参数检查
         if(!map.isEmpty()){
             //可选参数
-            String[] params={"acId", "userName","userId"};
+            String[] params={"acId","userId"};
             try{
                 int mode=this.getSwitchWay(params,map);
                 switch (mode){
@@ -54,19 +54,11 @@ public class ActivitySubmitController extends BaseController implements GetContr
                         if(JwtUtils.checkPermission(request.getHeader("token"),9)){
                             rep.setResp(0,activitySubmitService.getByAcidPage(map.get(params[mode]),map.get("current"),map.get("size")),"查询成功");
                         }else {
-                            rep.setResp(-1,null,"权限不足");
-                        }
-                        break;
-                    //username查询
-                    case 1:
-                        if(JwtUtils.checkPermission(request.getHeader("token"),9)){
-                            rep.setResp(0,activitySubmitService.getByUserNamePage(map.get(params[mode]),map.get("current"),map.get("size")),"查询成功");
-                        }else {
-                            rep.setResp(-1,null,"权限不足");
+                            rep.setResp(0,activitySubmitService.countActivitySubmit(map.get("acId")),"查询成功");
                         }
                         break;
                     //userid查询
-                    case 2:
+                    case 1:
                         if(JwtUtils.checkPermission(request.getHeader("token"),9)|| Objects.equals(map.get(params[mode]), String.valueOf(JwtUtils.getUserId(request.getHeader("token"))))){
                             rep.setResp(0,activitySubmitService.getByUserIdPage(map.get(params[mode]),map.get("current"),map.get("size")),"查询成功");
                         }else {
@@ -109,7 +101,6 @@ public class ActivitySubmitController extends BaseController implements GetContr
                         Long e = TimeTransformer.time2Long(activity.getDeadLine());
                         if (date.getTime() >= s && date.getTime() <= e) {
                             activitySubmit.setActivityId(activity.getActivityId());
-                            activitySubmit.setUserName(JwtUtils.getUserName(request.getHeader("token")));
                             activitySubmit.setUserId(JwtUtils.getUserId(request.getHeader("token")));
                             activitySubmit.setSubmitTime(TimeTransformer.date2Format(date));
                             if (activitySubmitService.save(activitySubmit)) {

@@ -38,16 +38,8 @@ public class UserController extends BaseController implements GetController, Put
     public RespBody doGet(Map<Object, String> map, HttpServletRequest request) {
         //空参数检查
         if(!map.isEmpty()){
-            //用户查询自己信息
-            if(map.get("id")!=null){
-                int tId=Integer.parseInt(map.get("id"));
-                if(tId==JwtUtils.getUserId(request.getHeader("token"))){
-                    rep.setResp(0,userService.userInfoById(tId),"查询成功");
-                    return rep;
-                }
-            }
             //(管理员)权限检查
-            if(JwtUtils.checkPermission(request.getHeader("token"),9)){
+            if(JwtUtils.checkPermission(request.getHeader("token"),9)&&map.containsKey("admin")){
                 //判断查询字段
                 if(map.get("name")!=null){
                     returnBody=userService.findInfoByName(map.get("name"),Integer.parseInt(map.get("current")),Integer.parseInt(map.get("size")));
@@ -65,12 +57,19 @@ public class UserController extends BaseController implements GetController, Put
                     }
                 }
                 else if (map.get("id")!=null){
-                    rep.setResp(0,userService.userInfoByIdPage(Integer.parseInt(map.get("id")),map.get("current"),map.get("size")).getData(),"查询成功");
+                    rep.setResp(0,userService.userInfoByIdPage(Integer.parseInt(map.get("id")),map.get("current"),map.get("size")),"查询成功");
                 }else if(map.containsKey("current")&&map.containsKey("size")){
                     rep.setResp(0,userService.findAll(map.get("current"),map.get("size")).getData(),"查询成功");
                 }
             }else {
-                rep.setResp(1,null,"权限不足");
+                //用户查询自己信息
+                if(map.get("id")!=null){
+                    int tId=Integer.parseInt(map.get("id"));
+                    if(tId==JwtUtils.getUserId(request.getHeader("token"))){
+                        rep.setResp(0,userService.userInfoById(tId),"查询成功");
+                        return rep;
+                    }
+                }
             }
         }else {
             rep.setResp(-1,null,"空参数");
