@@ -119,7 +119,8 @@ export default {
           this.getData={
             name:value,
             current:1,
-            size:10
+            size:10,
+            admin:1
           };
           this.onRefresh();
           break;
@@ -127,7 +128,8 @@ export default {
           this.getData={
             relName:value,
             current:1,
-            size:10
+            size:10,
+            admin:1
           };
           this.onRefresh();
           break;
@@ -135,7 +137,8 @@ export default {
           this.getData={
             id:value,
             current:1,
-            size:10
+            size:10,
+            admin:1
           };
           this.onRefresh();
           break;

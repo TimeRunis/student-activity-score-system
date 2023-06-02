@@ -6,7 +6,7 @@
         @click-left="$router.back()"
     />
     <admin-activity-submit-list :list="submitList"></admin-activity-submit-list>
-    <van-pagination v-model="page.current" :total-items="pageTotal" :show-page-size="6" style="position: fixed;bottom: 0;width: 100%">
+    <van-pagination @change="changePage" v-model="page.current" :page-count	="pageNumber" :items-per-page="page.size" :show-page-size="6" style="position: fixed;bottom: 0;width: 100%">
       <template #prev-text>
         <van-icon name="arrow-left" />
       </template>
@@ -27,15 +27,7 @@ export default {
   name: "AdminActivitySubmitView",
   components: {AdminActivitySubmitList},
   beforeMount() {
-    apiGet('activitySubmit',this.page).then((resp)=>{
-      if(resp.data['code']===0){
-        this.submitList=resp.data['data']['records'];
-        this.pageTotal=resp.data['data']['total'];
-      }else {
-        Notify({type:'danger',message:resp.data['message']});
-      }
-
-    })
+    this.getList();
   },
   data(){
     return{
@@ -45,7 +37,23 @@ export default {
         size:10,
       },
       submitList:[],
-      pageTotal:0,
+      pageNumber:0,
+    }
+  },
+  methods:{
+    changePage(event){
+      this.page.current=event;
+      this.getList();
+    },
+    getList(){
+      apiGet('activitySubmit',this.page).then((resp)=>{
+        if(resp.data['code']===0){
+          this.submitList=resp.data['data']['records'];
+          this.pageNumber=resp.data['data']['pages'];
+        }else {
+          Notify({type:'danger',message:resp.data['message']});
+        }
+      })
     }
   }
 }

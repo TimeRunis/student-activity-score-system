@@ -40,7 +40,7 @@
         </van-grid>
       </div>
     </div>
-    <admin-shop-list></admin-shop-list>
+    <admin-shop-list ref="goodsList"></admin-shop-list>
   </div>
 </template>
 
@@ -73,6 +73,7 @@ export default {
       },200);
     },
     search(){
+      this.$refs.goodsList.search(this.searchKey,this.searchOption);
     },
     showUserInfo(userInfo){
       this.user=userInfo;
