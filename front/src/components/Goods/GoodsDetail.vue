@@ -58,6 +58,7 @@ export default {
         this.goods.info=resp.data['data'];
         this.sku.stock_num=this.detail['goodsNumber'];
         this.sku.price=this.detail['goodsPrice'];
+        this.goods.picture=resp.data['data']['headImg'];
       })
     }
 
@@ -67,7 +68,6 @@ export default {
       this.sku.stock_num=parseInt(sku['stock_num']);
       this.sku.price=parseInt(sku['price']);
       this.goods=info;
-
     },
     setDetail(detail){
       this.detail=detail;

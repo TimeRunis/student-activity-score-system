@@ -24,10 +24,17 @@ export default {
     queryScoreCode(){
       apiGet('scoreCode',this.queryParam).then((resp)=>{
         if(resp.data['code']===0){
-          this.codeInfo=resp.data['data'];
-          this.codeInfo.deadLine=dateFormat(new Date(this.codeInfo.deadLine));
-          Notify({type:"success",message:resp.data["message"]})
-          console.info(this.codeInfo)
+          if(resp.data['data']['records'].length>0){
+            this.codeInfo.code=resp.data['data']['records'][0]['code'];
+            this.codeInfo.deadLine=resp.data['data']['records'][0]['deadLine'];
+            this.codeInfo.isUsed=resp.data['data']['records'][0]['isUsed'];
+            this.codeInfo.number=resp.data['data']['records'][0]['number'];
+            this.codeInfo.code=resp.data['data']['records'][0]['code'];
+            this.codeInfo.deadLine=dateFormat(new Date(this.codeInfo.deadLine));
+            Notify({type:"success",message:resp.data["message"]})
+          }else {
+            Notify({type:"danger",message:"积分码不存在"})
+          }
         }else {
           this.codeInfo.code=resp.data["message"];
           this.codeInfo.number=resp.data["message"];

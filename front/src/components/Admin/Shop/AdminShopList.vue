@@ -93,7 +93,7 @@ export default {
     deleteShop(index){
       Dialog.confirm({
         title: '确认',
-        message: '确定要删除这个活动吗',
+        message: '确定要删除这个商品吗',
       })
           .then(() => {
             apiDelete('goods',{id:this.list[index]['goodsId']}).then((resp)=>{

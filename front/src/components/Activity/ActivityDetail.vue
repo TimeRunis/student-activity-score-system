@@ -50,7 +50,7 @@ export default {
       })
       apiGet("activitySubmit",{acId:this.acId,current:1,size:10}).then((resp)=>{
         if (resp.data['code']===0){
-          this.userNumber=resp.data['data']['submitNumber'];
+          this.userNumber=resp.data['data']['total'];
         }else {
           this.userNumber="获取失败";
           Notify({type:"danger",message:resp.data['message']});
